@@ -1,7 +1,12 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import {HomeScreen, LoginScreen, RegisterScreen} from '../Screens';
+import {
+  HomeScreen,
+  LoginScreen,
+  RegisterScreen,
+  CameraScreen,
+} from '../Screens';
 import {RootStackParamList} from '../Constants/ScreenTypes';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -18,6 +23,7 @@ export default function Screen() {
         component={RegisterScreen}
         options={options}
       />
+      <Stack.Screen name="Camera" component={CameraScreen} options={options} />
     </Stack.Navigator>
   );
 }

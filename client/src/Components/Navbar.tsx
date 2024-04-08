@@ -30,6 +30,10 @@ const NavBar = ({navigation}: Props) => {
       <Pressable>
         <Icon name="settings" type="ionicon" />
       </Pressable>
+      {/* Camera */}
+      <Pressable onPress={() => navigation.navigate('Camera')}>
+        <Icon name="camera" type="ionicon" />
+      </Pressable>
     </View>
   );
 };
