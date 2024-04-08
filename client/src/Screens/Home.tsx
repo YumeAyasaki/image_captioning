@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Home({navigation}: Props) {
+export function Home({navigation}: Props) {
   return (
     <View style={styles.container}>
       {/* Title app */}
@@ -45,3 +45,5 @@ export default function Home({navigation}: Props) {
     </View>
   );
 }
+
+export type HomeProps = Props;

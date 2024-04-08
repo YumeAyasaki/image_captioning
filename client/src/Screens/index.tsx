@@ -1,29 +1,41 @@
 import * as React from 'react';
 import {View} from 'react-native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-
-import {RootStackParamList} from '../Constants/ScreenTypes';
 
 type Props = {
-  navigation: NativeStackScreenProps<RootStackParamList, 'Home'>;
-  children: React.ReactNode;
+  navigation: any;
+  children: React.ComponentType<any>;
+  props: any;
 };
 
-const Screen = ({navigation, children}: Props) => {
+const Screen = ({navigation, children, props}: Props) => {
   return (
     <View style={{display: 'flex', flex: 1}}>
-      {React.cloneElement(children as React.ReactElement, {navigation})}
+      {/* Pass the navigation and other props to the children */}
+      {React.createElement(children, {navigation, ...props})}
     </View>
   );
 };
 
-import Home from './Home';
-import Login from './Login';
-import Register from './Register';
+import {Home, HomeProps} from './Home';
+import {Login, LoginProps} from './Login';
+import {Register, RegisterProps} from './Register';
 
-export const HomeScreen = (props: any) =>
-  Screen({...props, children: Home(props)});
-export const LoginScreen = (props: any) =>
-  Screen({...props, children: Login(props)});
-export const RegisterScreen = (props: any) =>
-  Screen({...props, children: Register(props)});
+export const HomeScreen = (props: HomeProps) => {
+  const navigation = props.navigation;
+  const otherProps = {...props};
+  return <Screen navigation={navigation} children={Home} props={otherProps} />;
+};
+
+export const LoginScreen = (props: LoginProps) => {
+  const navigation = props.navigation;
+  const otherProps = {...props};
+  return <Screen navigation={navigation} children={Login} props={otherProps} />;
+};
+
+export const RegisterScreen = (props: RegisterProps) => {
+  const navigation = props.navigation;
+  const otherProps = {...props};
+  return (
+    <Screen navigation={navigation} children={Register} props={otherProps} />
+  );
+};

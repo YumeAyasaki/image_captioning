@@ -6,7 +6,9 @@ import {RootStackParamList} from '../Constants/ScreenTypes';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
-export default function Login({navigation}: Props) {
+export function Login({navigation}: Props) {
   console.log(navigation);
   return <View />;
 }
+
+export type LoginProps = Props;
