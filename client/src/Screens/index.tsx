@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {View} from 'react-native';
 
+import NavBar from '../Components/Navbar';
+
 type Props = {
   navigation: any;
   children: React.ComponentType<any>;
@@ -11,6 +13,7 @@ const Screen = ({navigation, children, props}: Props) => {
   return (
     <View style={{display: 'flex', flex: 1}}>
       {/* Pass the navigation and other props to the children */}
+      <NavBar navigation={navigation} />
       {React.createElement(children, {navigation, ...props})}
     </View>
   );
