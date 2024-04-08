@@ -1,9 +1,10 @@
 import * as React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Button} from '@rneui/base';
+import {Text} from '@rneui/themed';
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
-import Button from '../Components/Button';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -12,13 +13,20 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
   },
+  titleContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
+  },
   contentContainer: {
     flex: 1,
     justifyContent: 'center',
   },
-  welcomeText: {
-    fontSize: 20,
-    color: '#000000',
+  button: {
+    marginHorizontal: 10,
+    marginVertical: 5,
   },
 });
 
@@ -26,20 +34,21 @@ export function Home({navigation}: Props) {
   return (
     <View style={styles.container}>
       {/* Title app */}
-      <View>
-        <Text>Image captioning</Text>
+      <View style={styles.titleContainer}>
+        <Text h1>Image captioning</Text>
       </View>
-
       <View style={styles.contentContainer}>
         <View>
           <Button
-            text="Đăng nhập"
-            onPress={() => navigation.navigate('Login')}
-          />
+            containerStyle={styles.button}
+            onPress={() => navigation.navigate('Login')}>
+            Đăng nhập
+          </Button>
           <Button
-            text="Đăng ký"
-            onPress={() => navigation.navigate('Register')}
-          />
+            containerStyle={styles.button}
+            onPress={() => navigation.navigate('Register')}>
+            Đăng ký
+          </Button>
         </View>
       </View>
     </View>
