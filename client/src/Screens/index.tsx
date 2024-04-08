@@ -31,6 +31,7 @@ import {Home, HomeProps} from './Home';
 import {Login, LoginProps} from './Login';
 import {Register, RegisterProps} from './Register';
 import {CameraScreen as Camera, CameraProps} from './Camera';
+import {Select, SelectProps} from './Select';
 
 export const HomeScreen = (props: HomeProps) => {
   const navigation = props.navigation;
@@ -57,5 +58,13 @@ export const CameraScreen = (props: CameraProps) => {
   const otherProps = {...props};
   return (
     <Screen navigation={navigation} children={Camera} props={otherProps} />
+  );
+};
+
+export const SelectScreen = (props: SelectProps) => {
+  const navigation = props.navigation;
+  const otherProps = {...props};
+  return (
+    <Screen navigation={navigation} children={Select} props={otherProps} />
   );
 };

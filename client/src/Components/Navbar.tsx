@@ -34,6 +34,10 @@ const NavBar = ({navigation}: Props) => {
       <Pressable onPress={() => navigation.navigate('Camera')}>
         <Icon name="camera" type="ionicon" />
       </Pressable>
+      {/* Select */}
+      <Pressable onPress={() => navigation.navigate('Select')}>
+        <Icon name="image" type="ionicon" />
+      </Pressable>
     </View>
   );
 };
