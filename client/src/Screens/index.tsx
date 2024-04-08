@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 import NavBar from '../Components/Navbar';
 
@@ -9,9 +9,17 @@ type Props = {
   props: any;
 };
 
+// Temp styling
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flex: 1,
+  },
+});
+
 const Screen = ({navigation, children, props}: Props) => {
   return (
-    <View style={{display: 'flex', flex: 1}}>
+    <View style={styles.container}>
       {/* Pass the navigation and other props to the children */}
       <NavBar navigation={navigation} />
       {React.createElement(children, {navigation, ...props})}
