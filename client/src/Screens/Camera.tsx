@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useState} from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
-import {Text} from '@rneui/themed';
+import {Text, Image} from '@rneui/themed';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   useCameraPermission,
@@ -11,7 +11,6 @@ import {
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
 import {CameraPermissionAlert, CameraFoundAlert} from '../Utils/camera';
-import {Button} from '@rneui/base';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Camera'>;
 
@@ -53,7 +52,6 @@ const styles = StyleSheet.create({
 export function CameraScreen({navigation}: Props) {
   const {hasPermission, requestPermission} = useCameraPermission();
   const [cameraPermission, setCameraPermission] = useState(hasPermission);
-  console.log(hasPermission);
   if (!hasPermission) {
     requestPermission().then((res: any) => {
       if (!res) {
@@ -73,7 +71,23 @@ export function CameraScreen({navigation}: Props) {
 
   const capture = async () => {
     const photo = await cameraRef.current?.takePhoto();
-    console.log(photo);
+    console.log(`file://${photo?.path}`);
+    const tempUri = `file://${photo?.path}`;
+    let imageSize = {width: 0, height: 0};
+    await Image.getSize(
+      tempUri,
+      (width, height) => {
+        imageSize = {width, height};
+      },
+      error => {
+        console.error(error);
+      },
+    );
+    navigation.navigate('Image', {
+      type: 'file',
+      value: tempUri,
+      size: imageSize,
+    });
   };
 
   return (
@@ -90,6 +104,7 @@ export function CameraScreen({navigation}: Props) {
             style={styles.camera}
             photo
           />
+
           {/* Button break things, for some reason
           F*ck you, react-native-elements' button */}
           <Pressable

@@ -7,8 +7,8 @@ from .model import BlipCaptioningModel
 bp = Blueprint('captioning', __name__)
 model = BlipCaptioningModel()
 
-@bp.route('/generate', methods=['POST'])
-def generate_caption():
+@bp.route('/url', methods=['POST'])
+def generate_caption_url():
     # Get the image URL from the request
     image_url = request.json['image_url']
     # Get current time stamp
@@ -19,3 +19,14 @@ def generate_caption():
     # Return the caption as JSON
     return jsonify({'caption': caption, 'time_to_generate': time_to_generate.total_seconds()})
 
+@bp.route('/image', methods=['POST'])
+def generate_caption_image():
+    # Get the image from the request
+    image = request.files['image']
+    # Get current time stamp
+    time = datetime.datetime.now()
+    # Generate the caption
+    caption = model.generate_caption_from_image(image)
+    time_to_generate = datetime.datetime.now() - time
+    # Return the caption as JSON
+    return jsonify({'caption': caption, 'time_to_generate': time_to_generate.total_seconds()})

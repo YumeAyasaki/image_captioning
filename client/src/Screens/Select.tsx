@@ -34,12 +34,25 @@ const styles = StyleSheet.create({
 export function Select({navigation}: Props) {
   console.log(navigation);
 
-  const handleChoosePhoto = () => {
+  const handleChoosePhoto = async () => {
     const options: any = {
       mediaType: 'photo',
     };
-    launchImageLibrary(options, response => {
-      console.log(response);
+    const image = await launchImageLibrary(options);
+    if (image.didCancel || image.errorCode || image.errorMessage) {
+      return;
+    }
+    if (!image.assets) {
+      return;
+    }
+    const imageObject = image.assets[0];
+    if (!imageObject.uri || !imageObject.width || !imageObject.height) {
+      return;
+    }
+    navigation.navigate('Image', {
+      type: 'file',
+      value: imageObject.uri,
+      size: {width: imageObject.width, height: imageObject.height},
     });
   };
   return (
