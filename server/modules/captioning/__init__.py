@@ -4,7 +4,7 @@ import datetime
 
 from .model import BlipCaptioningModel
 
-bp = Blueprint('captioning', __name__)
+bp = Blueprint('captioning', __name__, url_prefix='/api') # May need to add captioning behind later, if it's needed
 model = BlipCaptioningModel()
 
 @bp.route('/url', methods=['POST'])
@@ -22,11 +22,11 @@ def generate_caption_url():
 @bp.route('/image', methods=['POST'])
 def generate_caption_image():
     # Get the image from the request
-    image = request.files['image']
+    image = request.files.get('image')
     # Get current time stamp
     time = datetime.datetime.now()
     # Generate the caption
-    caption = model.generate_caption_from_image(image)
+    caption = model.generate_caption(image)
     time_to_generate = datetime.datetime.now() - time
     # Return the caption as JSON
     return jsonify({'caption': caption, 'time_to_generate': time_to_generate.total_seconds()})

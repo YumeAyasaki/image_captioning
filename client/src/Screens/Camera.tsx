@@ -83,6 +83,9 @@ export function CameraScreen({navigation}: Props) {
         console.error(error);
       },
     );
+    console.log(imageSize);
+    // Make uri from the photo and send it to the image screen
+    // Platform is Android
     navigation.navigate('Image', {
       type: 'file',
       value: tempUri,

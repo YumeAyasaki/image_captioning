@@ -3,6 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Button} from '@rneui/base';
 import {Text} from '@rneui/themed';
+import Config from 'react-native-config';
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
 
@@ -31,6 +32,7 @@ const styles = StyleSheet.create({
 });
 
 export function Home({navigation}: Props) {
+  console.log(Config.BACKEND_URL);
   return (
     <View style={styles.container}>
       {/* Title app */}

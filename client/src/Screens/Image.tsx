@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react';
-import {View, StyleSheet, Dimensions} from 'react-native';
+import {View, StyleSheet, Dimensions, Alert} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Button} from '@rneui/base';
 import {Text, Image} from '@rneui/themed';
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
+import CaptioningAPI from '../Services/captionAPI';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Image'>;
 
@@ -53,7 +54,26 @@ export function ImageScreen({navigation, route}: Props) {
     }
   }, [params, pictureHeight]);
 
-  // Adjust the picture's component size based on the picture's size
+  const handleSend = async () => {
+    const fileType = uri.split('.').pop();
+    const form = new FormData();
+    form.append('image', {
+      uri: uri,
+      type: `image/${fileType}`,
+      name: `image.${fileType}`,
+    });
+    let res = null;
+    try {
+      res = await CaptioningAPI.image(form, '');
+    } catch (e) {
+      console.log(e);
+    }
+    const resData = res?.data;
+    if (!resData) {
+      return;
+    }
+    Alert.alert('Caption', resData.caption);
+  };
 
   return (
     <View style={styles.container}>
@@ -70,7 +90,9 @@ export function ImageScreen({navigation, route}: Props) {
               resizeMode="contain"
             />
           )}
-          <Button containerStyle={styles.button}>Gửi</Button>
+          <Button containerStyle={styles.button} onPress={() => handleSend()}>
+            Gửi
+          </Button>
         </View>
       </View>
     </View>
