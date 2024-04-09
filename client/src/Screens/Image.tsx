@@ -41,32 +41,42 @@ export function ImageScreen({navigation, route}: Props) {
   const [pictureHeight, setPictureHeight] = useState(300);
   const [uri, setUri] = useState('');
   useEffect(() => {
-    if (params.type === 'file') {
-      // uri
-      setUri(params.value);
-      // height
-      const newHeight = Math.min(
-        Dimensions.get('window').height * 0.7,
-        params.size.height,
-      );
-      setPictureHeight(newHeight);
-    } else if (params.type === 'url') {
-    }
+    // uri/url
+    setUri(params.value);
+    // height
+    const newHeight = Math.min(
+      Dimensions.get('window').height * 0.7,
+      params.size.height,
+    );
+    setPictureHeight(newHeight);
   }, [params, pictureHeight]);
 
   const handleSend = async () => {
-    const fileType = uri.split('.').pop();
-    const form = new FormData();
-    form.append('image', {
-      uri: uri,
-      type: `image/${fileType}`,
-      name: `image.${fileType}`,
-    });
     let res = null;
-    try {
-      res = await CaptioningAPI.image(form, '');
-    } catch (e) {
-      console.log(e);
+    if (params.type === 'url') {
+      // JSON object with params image_url
+      const req = {
+        image_url: uri,
+      };
+      try {
+        res = await CaptioningAPI.url(JSON.stringify(req), '');
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      const fileType = uri.split('.').pop();
+      const form = new FormData();
+      form.append('image', {
+        uri: uri,
+        type: `image/${fileType}`,
+        name: `image.${fileType}`,
+      });
+
+      try {
+        res = await CaptioningAPI.image(form, '');
+      } catch (e) {
+        console.log(e);
+      }
     }
     const resData = res?.data;
     if (!resData) {

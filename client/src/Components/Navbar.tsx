@@ -38,13 +38,10 @@ const NavBar = ({navigation}: Props) => {
       <Pressable onPress={() => navigation.navigate('Select')}>
         <Icon name="image" type="ionicon" />
       </Pressable>
-      {/* Will remove later, since Image page is supposed to be opened only with params, which can only be obtained from Select page or Camera page */}
-      {/* <Pressable
-        onPress={() =>
-          navigation.navigate('Image', {type: 'file', value: 'a'})
-        }>
-        <Icon name="send" type="ionicon" />
-      </Pressable> */}
+      {/* Url */}
+      <Pressable onPress={() => navigation.navigate('Url')}>
+        <Icon name="globe" type="ionicon" />
+      </Pressable>
     </View>
   );
 };

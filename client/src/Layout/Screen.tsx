@@ -8,6 +8,7 @@ import {
   CameraScreen,
   SelectScreen,
   ImageScreen,
+  UrlScreen,
 } from '../Screens';
 import {RootStackParamList} from '../Constants/ScreenTypes';
 
@@ -28,6 +29,7 @@ export default function Screen() {
       <Stack.Screen name="Camera" component={CameraScreen} options={options} />
       <Stack.Screen name="Select" component={SelectScreen} options={options} />
       <Stack.Screen name="Image" component={ImageScreen} options={options} />
+      <Stack.Screen name="Url" component={UrlScreen} options={options} />
     </Stack.Navigator>
   );
 }

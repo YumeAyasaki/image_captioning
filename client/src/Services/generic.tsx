@@ -1,13 +1,14 @@
 import axios from 'axios';
 import Config from 'react-native-config';
 
-// const baseURL = Config.BACKEND_URL;
-const baseURL = 'https://0ee8-113-23-110-241.ngrok-free.app';
+const baseURL = Config.BACKEND_URL;
+// const baseURL = 'https://0ee8-113-23-110-241.ngrok-free.app';
 
 export const configToken = function (token: string) {
   return {
     headers: {
       Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     },
   };
 };

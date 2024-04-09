@@ -10,4 +10,5 @@ export type RootStackParamList = {
     value: string;
     size: {width: number; height: number};
   };
+  Url: undefined;
 };
