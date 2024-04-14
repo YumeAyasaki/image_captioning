@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {View, StyleSheet, Pressable} from 'react-native';
-import {Icon} from '@rneui/themed';
+import Icons from 'react-native-vector-icons/Ionicons';
 
 const styles = StyleSheet.create({
   navBarContainer: {
@@ -24,23 +24,23 @@ const NavBar = ({navigation}: Props) => {
   return (
     <View style={styles.navBarContainer}>
       <Pressable onPress={() => navigation.navigate('Home')}>
-        <Icon name="home" type="ionicon" />
+        <Icons name="home" size={30} color="white" />
       </Pressable>
       {/* Setting, TODO */}
       <Pressable>
-        <Icon name="settings" type="ionicon" />
+        <Icons name="settings" size={30} color="white" />
       </Pressable>
       {/* Camera */}
       <Pressable onPress={() => navigation.navigate('Camera')}>
-        <Icon name="camera" type="ionicon" />
+        <Icons name="camera" size={30} color="white" />
       </Pressable>
       {/* Select */}
       <Pressable onPress={() => navigation.navigate('Select')}>
-        <Icon name="image" type="ionicon" />
+        <Icons name="image" size={30} color="white" />
       </Pressable>
       {/* Url */}
       <Pressable onPress={() => navigation.navigate('Url')}>
-        <Icon name="globe" type="ionicon" />
+        <Icons name="globe" size={30} color="white" />
       </Pressable>
     </View>
   );

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {useState} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
-import {Text, Image} from '@rneui/themed';
+import {Pressable, StyleSheet, View, Text, Image} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   useCameraPermission,
@@ -11,6 +10,7 @@ import {
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
 import {CameraPermissionAlert, CameraFoundAlert} from '../Utils/camera';
+import {TextStl} from '../Constants/Style';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Camera'>;
 
@@ -96,7 +96,7 @@ export function CameraScreen({navigation}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text h1>Camera</Text>
+        <Text style={TextStl.h1}>Camera</Text>
       </View>
       {cameraPermission && (
         <View style={styles.container}>

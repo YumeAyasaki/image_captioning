@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {View, StyleSheet, TextInput, Alert} from 'react-native';
+import {View, StyleSheet, TextInput, Alert, Text, Image} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Button, Input as BaseInput} from '@rneui/base';
-import {Text, Input, Image} from '@rneui/themed';
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
+import Button from '../Components/Button';
+import {TextStl, InputStl, theme} from '../Constants/Style';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Url'>;
 
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 
 export function Url({navigation}: Props) {
   console.log(navigation);
-  const urlRef = React.createRef<TextInput & BaseInput>();
+  const urlRef = React.createRef<TextInput>();
   let url = '';
   let imageSize = {width: 0, height: 0};
 
@@ -60,22 +60,20 @@ export function Url({navigation}: Props) {
     <View style={styles.container}>
       {/* Title app */}
       <View style={styles.titleContainer}>
-        <Text h1>Image link</Text>
+        <Text style={TextStl.h1}>Image link</Text>
       </View>
       <View style={styles.contentContainer}>
         <View>
-          <Input
-            placeholder="Nhập link ảnh"
+          <TextInput
             ref={urlRef}
+            style={[InputStl.container, TextStl.base]}
+            placeholderTextColor={theme.darkGrey}
             onChangeText={text => {
               url = text;
             }}
+            placeholder="Nhập link ảnh"
           />
-          <Button
-            containerStyle={styles.button}
-            onPress={() => handleChooseImage()}>
-            Chọn ảnh
-          </Button>
+          <Button text={'Chọn ảnh'} onPress={() => handleChooseImage()} />
         </View>
       </View>
     </View>

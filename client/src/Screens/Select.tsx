@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Button} from '@rneui/base';
-import {Text} from '@rneui/themed';
 import {launchImageLibrary} from 'react-native-image-picker';
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
+import Button from '../Components/Button';
+import {TextStl} from '../Constants/Style';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Select'>;
 
@@ -24,10 +24,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     justifyContent: 'center',
-  },
-  button: {
-    marginHorizontal: 10,
-    marginVertical: 5,
   },
 });
 
@@ -59,15 +55,11 @@ export function Select({navigation}: Props) {
     <View style={styles.container}>
       {/* Title app */}
       <View style={styles.titleContainer}>
-        <Text h1>Image selection</Text>
+        <Text style={TextStl.h1}>Image selection</Text>
       </View>
       <View style={styles.contentContainer}>
         <View>
-          <Button
-            containerStyle={styles.button}
-            onPress={() => handleChoosePhoto()}>
-            Chọn ảnh
-          </Button>
+          <Button text={'Chọn ảnh'} onPress={() => handleChoosePhoto()} />
         </View>
       </View>
     </View>

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {View, StyleSheet, TextInput} from 'react-native';
+import {View, StyleSheet, TextInput, Text} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Input, Text} from '@rneui/themed';
-import {Input as BaseInput, Button} from '@rneui/base';
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
+import {TextStl, InputStl, theme} from '../Constants/Style';
+import Button from '../Components/Button';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
@@ -30,20 +30,35 @@ export function Register({navigation}: Props) {
   console.log(navigation);
   const formRef = {
     // https://github.com/react-native-elements/react-native-elements/issues/3202#issuecomment-1367369969
-    username: React.createRef<TextInput & BaseInput>(),
-    password: React.createRef<TextInput & BaseInput>(),
-    rePassword: React.createRef<TextInput & BaseInput>(),
+    username: React.createRef<TextInput>(),
+    password: React.createRef<TextInput>(),
+    rePassword: React.createRef<TextInput>(),
   };
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text h1>Đăng ký</Text>
+        <Text style={TextStl.h1}>Đăng ký</Text>
       </View>
       <View style={styles.formContainer}>
-        <Input ref={formRef.username} placeholder="Tài khoản" />
-        <Input ref={formRef.password} placeholder="Mật khẩu" />
-        <Input ref={formRef.rePassword} placeholder="Nhập lại mật khẩu" />
-        <Button>Đăng nhập</Button>
+        <TextInput
+          ref={formRef.username}
+          style={[InputStl.container, TextStl.base]}
+          placeholderTextColor={theme.darkGrey}
+          placeholder="Tài khoản"
+        />
+        <TextInput
+          ref={formRef.password}
+          style={[InputStl.container, TextStl.base]}
+          placeholderTextColor={theme.darkGrey}
+          placeholder="Mật khẩu"
+        />
+        <TextInput
+          ref={formRef.rePassword}
+          style={[InputStl.container, TextStl.base]}
+          placeholderTextColor={theme.darkGrey}
+          placeholder="Nhập lại mật khẩu"
+        />
+        <Button text={'Đăng ký'} />
       </View>
     </View>
   );

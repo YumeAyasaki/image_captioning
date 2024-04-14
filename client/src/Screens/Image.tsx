@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react';
-import {View, StyleSheet, Dimensions, Alert} from 'react-native';
+import {View, StyleSheet, Dimensions, Alert, Text, Image} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Button} from '@rneui/base';
-import {Text, Image} from '@rneui/themed';
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
 import CaptioningAPI from '../Services/captionAPI';
+import Button from '../Components/Button';
+import {TextStl} from '../Constants/Style';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Image'>;
 
@@ -45,7 +45,7 @@ export function ImageScreen({navigation, route}: Props) {
     setUri(params.value);
     // height
     const newHeight = Math.min(
-      Dimensions.get('window').height * 0.7,
+      Dimensions.get('window').height * 0.65,
       params.size.height,
     );
     setPictureHeight(newHeight);
@@ -89,7 +89,7 @@ export function ImageScreen({navigation, route}: Props) {
     <View style={styles.container}>
       {/* Title */}
       <View style={styles.titleContainer}>
-        <Text h1>Image captioning</Text>
+        <Text style={TextStl.h1}>Image captioning</Text>
       </View>
       <View style={styles.contentContainer}>
         <View>
@@ -100,9 +100,10 @@ export function ImageScreen({navigation, route}: Props) {
               resizeMode="contain"
             />
           )}
-          <Button containerStyle={styles.button} onPress={() => handleSend()}>
-            Gửi
-          </Button>
+          <View>
+            <Button text={'Thêm vào dữ liệu'} />
+            <Button text={'Gửi'} onPress={() => handleSend()} />
+          </View>
         </View>
       </View>
     </View>
