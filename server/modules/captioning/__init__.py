@@ -4,7 +4,7 @@ import datetime
 
 from .model import BlipCaptioningModel
 
-bp = Blueprint('captioning', __name__, url_prefix='/api') # May need to add captioning behind later, if it's needed
+bp = Blueprint('captioning', __name__, url_prefix='/api/caption') # May need to add captioning behind later, if it's needed
 model = BlipCaptioningModel()
 
 @bp.route('/url', methods=['POST'])

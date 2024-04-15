@@ -2,7 +2,9 @@ from flask import Flask
 from flask_cors import CORS
 from logging.config import dictConfig
 
-from modules.captioning import bp
+from modules.captioning import bp as caption_bp
+from modules.users import bp as user_bp
+from database import db
 
 def define_logging():
     dictConfig({
@@ -37,13 +39,14 @@ def create_app():
     CORS(app)
 
     # Route/Blueprint here
-    app.register_blueprint(bp)
+    app.register_blueprint(caption_bp)
+    app.register_blueprint(user_bp)
     
     return app
 
 if __name__ == '__main__':
     app = create_app()
-    # db.init_db()
+    db.init_db()
     # navigation.init()
     print('Initialize completely...')
     app.run(debug=True)

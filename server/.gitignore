@@ -1,5 +1,7 @@
 .conda
 app.log
+*.pyc
+
 
 # Kwang's thingy
 note.md
