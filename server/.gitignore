@@ -2,7 +2,6 @@
 app.log
 *.pyc
 
-
 # Kwang's thingy
 note.md
 temp_2.ipynb

@@ -13,18 +13,23 @@ bp = Blueprint('image', __name__, url_prefix='/image')
 def get_all(user):
     # Get all images from user
     images = db.query(Image, {'user_id': user.id})
+    print(images)
     return jsonify({'images': [image.to_dict() for image in images]})
 
 @bp.route('/add/', methods=['POST'])
 @token_required
 def add(user):
     data = request.get_json()
-    image = Image(data)
-    image.user_id = user.id
+    try:
+        image = Image(data)
+    except AssertionError:
+        return jsonify({'message': 'Thông tin ảnh không phù hợp.', 'detailed': sys.exc_info()[1].args[0]}), 400
+    image.link_user(user)
+    user.add_image(image)
     db.save(image)
     return jsonify({'message': 'Thêm ảnh thành công.'})
 
-@bp.route('/delete/<int:id>', methods=['DELETE'])
+@bp.route('/delete/<id>', methods=['DELETE'])
 @token_required
 def delete(user, id):
     image = db.query(Image, {'id': id})
