@@ -7,7 +7,7 @@ from .model import BlipCaptioningModel
 bp = Blueprint('captioning', __name__, url_prefix='/api/caption') # May need to add captioning behind later, if it's needed
 model = BlipCaptioningModel()
 
-@bp.route('/url', methods=['POST'])
+@bp.route('/url/', methods=['POST'])
 def generate_caption_url():
     # Get the image URL from the request
     image_url = request.json['image_url']
@@ -19,7 +19,7 @@ def generate_caption_url():
     # Return the caption as JSON
     return jsonify({'caption': caption, 'time_to_generate': time_to_generate.total_seconds()})
 
-@bp.route('/image', methods=['POST'])
+@bp.route('/image/', methods=['POST'])
 def generate_caption_image():
     # Get the image from the request
     image = request.files.get('image')

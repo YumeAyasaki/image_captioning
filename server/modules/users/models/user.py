@@ -66,3 +66,9 @@ class User(db.Base):
     def add_image(self, image):
         self.images.append(image)
         return self
+    
+    def simple_user(self):
+        return {
+            'username': self.username,
+            'email': self.email,
+        }

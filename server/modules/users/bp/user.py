@@ -36,7 +36,7 @@ def register():
         db.rollback()
         return jsonify({'message': 'Đăng ký thất bại.'}), 400
 
-    return jsonify({'message': 'Đăng ký thành công.'})
+    return jsonify({'message': 'Đăng ký thành công.'}), 201
 
 
 @bp.route('/login/', methods=['POST'])
@@ -65,5 +65,5 @@ def login():
         'id': user.id,
     }, SECRET_KEY, algorithm='HS256')
 
-    return jsonify({'message': 'Đăng nhập thành công.', 'token': token}), 201
+    return jsonify({'message': 'Đăng nhập thành công.', 'token': token, 'user': user.simple_user()}), 201
 

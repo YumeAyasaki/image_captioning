@@ -1,12 +1,24 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react';
-import {View, StyleSheet, Dimensions, Alert, Text, Image} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Alert,
+  Text,
+  Image,
+  TextInput,
+  ViewStyle,
+} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
 import CaptioningAPI from '../Services/captionAPI';
 import Button from '../Components/Button';
-import {TextStl} from '../Constants/Style';
+import {InputStl, TextStl, theme} from '../Constants/Style';
+import BlackBackgroundModal from '../Components/UploadModal';
+import ImageAPI from '../Services/imageAPI';
+import {getToken} from '../Utils/user';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Image'>;
 
@@ -33,6 +45,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 5,
   },
+  modalButton: {
+    marginHorizontal: 2,
+  },
+  sameRow: {
+    flexDirection: 'row',
+  },
 });
 
 export function ImageScreen({navigation, route}: Props) {
@@ -40,6 +58,11 @@ export function ImageScreen({navigation, route}: Props) {
   const params = route.params;
   const [pictureHeight, setPictureHeight] = useState(300);
   const [uri, setUri] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
+  var formData = {
+    title: '',
+    annotation: '',
+  };
   useEffect(() => {
     // uri/url
     setUri(params.value);
@@ -85,8 +108,67 @@ export function ImageScreen({navigation, route}: Props) {
     Alert.alert('Caption', resData.caption);
   };
 
+  const handleUpload = async () => {
+    let res = null;
+    const token = await getToken();
+    const req = {
+      ...formData,
+      url: uri,
+    };
+    try {
+      res = await ImageAPI.add(req, token);
+    } catch (e) {
+      console.log(e);
+      Alert.alert('Error', 'Upload failed');
+    }
+    const resData = res?.data;
+    if (!resData) {
+      return;
+    }
+    Alert.alert('Success', 'Uploaded', [
+      {
+        text: 'OK',
+        onPress: () => {
+          setIsUploading(false);
+        },
+      },
+    ]);
+  };
+
   return (
     <View style={styles.container}>
+      {isUploading && (
+        <BlackBackgroundModal>
+          <TextInput
+            style={[InputStl.container, TextStl.base]}
+            placeholderTextColor={theme.darkGrey}
+            placeholder="Tiêu đề"
+            onChangeText={text => {
+              formData.title = text;
+            }}
+          />
+          <TextInput
+            style={[InputStl.container, TextStl.base]}
+            placeholderTextColor={theme.darkGrey}
+            placeholder="Nội dung"
+            onChangeText={text => {
+              formData.annotation = text;
+            }}
+          />
+          <View style={styles.sameRow}>
+            <Button
+              style={[styles.container, styles.modalButton] as ViewStyle}
+              text="Xác nhận"
+              onPress={() => handleUpload()}
+            />
+            <Button
+              style={[styles.container, styles.modalButton] as ViewStyle}
+              text="Hủy"
+              onPress={() => setIsUploading(false)}
+            />
+          </View>
+        </BlackBackgroundModal>
+      )}
       {/* Title */}
       <View style={styles.titleContainer}>
         <Text style={TextStl.h1}>Image captioning</Text>
@@ -101,7 +183,12 @@ export function ImageScreen({navigation, route}: Props) {
             />
           )}
           <View>
-            <Button text={'Thêm vào dữ liệu'} />
+            {params.type === 'url' && (
+              <Button
+                text={'Thêm vào dữ liệu'}
+                onPress={() => setIsUploading(true)}
+              />
+            )}
             <Button text={'Gửi'} onPress={() => handleSend()} />
           </View>
         </View>

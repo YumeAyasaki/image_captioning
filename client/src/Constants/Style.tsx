@@ -35,6 +35,14 @@ export const TextStl = {
     fontWeight: 'bold',
     textAlign: 'center',
   } as TextStyle,
+  h2: {
+    color: theme.black,
+    fontSize: 1.5 * em,
+    marginVertical: em * 0.5,
+    marginHorizontal: 0,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  } as TextStyle,
 };
 
 export const ButtonStl = {

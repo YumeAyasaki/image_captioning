@@ -1,10 +1,13 @@
 import * as React from 'react';
-import {StyleSheet, View, TextInput, Text} from 'react-native';
+import {StyleSheet, View, TextInput, Text, Alert} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
 import Button from '../Components/Button';
 import {TextStl, InputStl, theme} from '../Constants/Style';
+import UserAPI from '../Services/userAPI';
+import {getUser} from '../Utils/user';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -27,12 +30,43 @@ const styles = StyleSheet.create({
 });
 
 export function Login({navigation}: Props) {
-  const formRef = {
-    // https://github.com/react-native-elements/react-native-elements/issues/3202#issuecomment-1367369969
-    username: React.createRef<TextInput>(),
-    password: React.createRef<TextInput>(),
+  var formData = {
+    username: '',
+    password: '',
   };
-  console.log(navigation);
+
+  const handleLogin = async () => {
+    let res = null;
+    try {
+      res = await UserAPI.login(formData);
+    } catch (err) {
+      console.log(err);
+      if (typeof err === 'string') {
+        Alert.alert('Đăng nhập thất bại', err);
+      } else {
+        Alert.alert('Đăng nhập thất bại');
+      }
+      console.log(err);
+      return;
+    }
+
+    try {
+      await AsyncStorage.setItem('token', res.data.token);
+      await AsyncStorage.setItem('user', JSON.stringify(res.data.user));
+
+      const user = await getUser();
+
+      Alert.alert('Đăng nhập thành công', 'Xin chào ' + user.username + '.', [
+        {
+          text: 'OK',
+          onPress: () => navigation.replace('Home'),
+        },
+      ]);
+    } catch (err) {
+      console.log(err);
+      Alert.alert('Đăng nhập thất bại');
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -40,18 +74,23 @@ export function Login({navigation}: Props) {
       </View>
       <View style={styles.formContainer}>
         <TextInput
-          ref={formRef.username}
           style={[InputStl.container, TextStl.base]}
           placeholderTextColor={theme.darkGrey}
           placeholder="Tài khoản"
+          onChangeText={text => {
+            formData.username = text;
+          }}
         />
         <TextInput
-          ref={formRef.password}
           style={[InputStl.container, TextStl.base]}
           placeholderTextColor={theme.darkGrey}
           placeholder="Mật khẩu"
+          secureTextEntry={true}
+          onChangeText={text => {
+            formData.password = text;
+          }}
         />
-        <Button text={'Đăng nhập'} />
+        <Button text={'Đăng nhập'} onPress={() => handleLogin()} />
       </View>
     </View>
   );

@@ -34,6 +34,7 @@ import {CameraScreen as Camera, CameraProps} from './Camera';
 import {Select, SelectProps} from './Select';
 import {ImageScreen as Image, ImageProps} from './Image';
 import {Url, UrlProps} from './Url';
+import {Database, DatabaseProps} from './Database';
 
 export const HomeScreen = (props: HomeProps) => {
   const navigation = props.navigation;
@@ -81,4 +82,12 @@ export const UrlScreen = (props: UrlProps) => {
   const navigation = props.navigation;
   const otherProps = {...props};
   return <Screen navigation={navigation} children={Url} props={otherProps} />;
+};
+
+export const DatabaseScreen = (props: DatabaseProps) => {
+  const navigation = props.navigation;
+  const otherProps = {...props};
+  return (
+    <Screen navigation={navigation} children={Database} props={otherProps} />
+  );
 };

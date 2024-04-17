@@ -42,6 +42,10 @@ const NavBar = ({navigation}: Props) => {
       <Pressable onPress={() => navigation.navigate('Url')}>
         <Icons name="globe" size={30} color="white" />
       </Pressable>
+      {/* Database */}
+      <Pressable onPress={() => navigation.navigate('Database')}>
+        <Icons name="server" size={30} color="white" />
+      </Pressable>
     </View>
   );
 };

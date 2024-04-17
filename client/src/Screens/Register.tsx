@@ -1,10 +1,11 @@
 import * as React from 'react';
-import {View, StyleSheet, TextInput, Text} from 'react-native';
+import {View, StyleSheet, TextInput, Text, Alert} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
 import {TextStl, InputStl, theme} from '../Constants/Style';
 import Button from '../Components/Button';
+import UserAPI from '../Services/userAPI';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
@@ -27,12 +28,30 @@ const styles = StyleSheet.create({
 });
 
 export function Register({navigation}: Props) {
-  console.log(navigation);
-  const formRef = {
-    // https://github.com/react-native-elements/react-native-elements/issues/3202#issuecomment-1367369969
-    username: React.createRef<TextInput>(),
-    password: React.createRef<TextInput>(),
-    rePassword: React.createRef<TextInput>(),
+  var formData = {
+    username: '',
+    password: '',
+    rePassword: '',
+    email: '',
+  };
+
+  const handleRegister = async () => {
+    let res = null;
+    try {
+      res = await UserAPI.register(formData);
+    } catch (err) {
+      console.log(err);
+      if (typeof err === 'string') {
+        Alert.alert('Đăng ký thất bại', err);
+      } else {
+        Alert.alert('Đăng ký thất bại');
+      }
+      console.log(err);
+      return;
+    }
+    Alert.alert('Đăng ký thành công', 'Vui lòng đăng nhập để tiếp tục', [
+      {text: 'OK', onPress: () => navigation.navigate('Login')},
+    ]);
   };
   return (
     <View style={styles.container}>
@@ -41,24 +60,38 @@ export function Register({navigation}: Props) {
       </View>
       <View style={styles.formContainer}>
         <TextInput
-          ref={formRef.username}
           style={[InputStl.container, TextStl.base]}
           placeholderTextColor={theme.darkGrey}
           placeholder="Tài khoản"
+          onChangeText={text => {
+            formData.username = text;
+          }}
         />
         <TextInput
-          ref={formRef.password}
           style={[InputStl.container, TextStl.base]}
           placeholderTextColor={theme.darkGrey}
           placeholder="Mật khẩu"
+          onChangeText={text => {
+            formData.password = text;
+          }}
         />
         <TextInput
-          ref={formRef.rePassword}
           style={[InputStl.container, TextStl.base]}
           placeholderTextColor={theme.darkGrey}
           placeholder="Nhập lại mật khẩu"
+          onChangeText={text => {
+            formData.rePassword = text;
+          }}
         />
-        <Button text={'Đăng ký'} />
+        <TextInput
+          style={[InputStl.container, TextStl.base]}
+          placeholderTextColor={theme.darkGrey}
+          placeholder="Email"
+          onChangeText={text => {
+            formData.email = text;
+          }}
+        />
+        <Button text={'Đăng ký'} onPress={() => handleRegister()} />
       </View>
     </View>
   );
