@@ -51,8 +51,8 @@
 						<button type="submit" form="ImageForm" class = "confirmButton" value="Like"> LET'S DO THIS </button>
 					</div>
 				</div>
-					<div id = "confirmBox" class = "Part_3">
-				<div class ="boxed">
+				<div id = "confirmBox" class = "Part_3">
+					<div class ="boxed">
 						<h1> Kết quả trả về
 								<br></h1>
 						<!--<div class = "TwoDOverlay">
@@ -61,6 +61,18 @@
 						</div>-->
 						<div class = "ResultBox">
 							<p id = "CaptioningResult"> Caption result should be here </p> 
+						</div>
+					</div>
+				</div>
+				<div id = "reportSection" class = "Part_3 Hidden_">
+					<div class ="boxed">
+						<h1> Nhập mô tả chính xác cho ảnh:
+								<br></h1>
+						<div class = "ReportBox">
+							<form id="ChinhSuaForm" action="/chinhsua" enctype = "multipart/form-data" target="hiddenFrame">
+								<input type="file" name="file" id="ChinhSuaBox" value="" onclick="this.value=null;" style="display:none;" accept="image/png, image/gif, image/jpeg"/>
+								<input type="text" name="ChinhSuaText" id="ChinhSuaText" class = "ChinhSuaText" value=""/>
+							</form>
 						</div>
 					</div>
 				</div>

@@ -25,7 +25,7 @@ function updateTextInput(val, ID) {
 //Drag N Drop Image
 const dropContainer = document.getElementById("dropContainer");
 const InputBox = document.getElementById("InputBox");
-//const InputBox2 = document.getElementById("InputBox2");
+const ChinhSuaBox = document.getElementById("ChinhSuaBox");
   
 dropContainer.ondragover = dropContainer.ondragenter = function(evt) {
   evt.preventDefault();
@@ -35,13 +35,13 @@ dropContainer.ondrop = function(evt) {
   console.log ("ye");
   evt.preventDefault();
   InputBox.files = evt.dataTransfer.files;
-  //InputBox2.files = evt.dataTransfer.files;
+  ChinhSuaBox.files = evt.dataTransfer.files;
 
   // If you want to use some of the dropped files
   const dT = new DataTransfer();
   dT.items.add(evt.dataTransfer.files[0]);
   InputBox.files = dT.files;
-  //InputBox2.files = dT.files;
+  ChinhSuaBox.files = dT.files;
   blah.src = URL.createObjectURL(evt.dataTransfer.files[0]);
   //document.getElementById("sample").src =  blah.src;
   evt.preventDefault();
@@ -53,10 +53,10 @@ dropContainer.ondrop = function(evt) {
 };
 InputBox.onchange = evt => {
   const [file] = InputBox.files;
-  InputBox2.files = InputBox.files;
+  ChinhSuaBox.files = InputBox.files;
   if (file) {
     blah.src = URL.createObjectURL(file);
-	document.getElementById("sample").src =  blah.src;
+	//document.getElementById("sample").src =  blah.src;
   }
   document.getElementsByClassName ("ShowAfterShrink")[0].style.display = "block";
   document.getElementsByClassName ("RemoveAfterShrink")[0].style.display = "none";
@@ -98,19 +98,20 @@ document.querySelector("#ImageForm").addEventListener("submit", function(e){
 		  .then(blob => blob.text()).then (textValue => {changeResultText (textValue)});
 });
 
-/*document.querySelector("#ImageForm2").addEventListener("submit", function(e){
+document.querySelector("#ChinhSuaForm").addEventListener("submit", function(e){
+		console.log ("ChinhSuaForm");
         e.preventDefault();    //stop form from submitting
-		const myForm2 = document.forms['ImageForm2']
-		fetch(document.forms['ImageForm2'].action, {method:'post', body: new FormData(myForm2)})
+		const myForm2 = document.forms['ChinhSuaForm']
+		fetch(document.forms['ChinhSuaForm'].action, {method:'post', body: new FormData(myForm2)})
 				.then((response) => {
 			if (!response.ok) {
 			  throw new Error("HTTP error: ${response.status}");
 			}
 			return response.blob();
 		  })
-		  .then((blob) => {changeImage (blob); 
+		  .then((blob) => {console.log (blob); 
   });
-});*/
+});
 function disableLastButton(){
       document.getElementById("LastButton").disabled = true;
       setTimeout(function(){document.getElementById("LastButton").disabled = false;},20000);
