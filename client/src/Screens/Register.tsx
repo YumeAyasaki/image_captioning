@@ -74,6 +74,7 @@ export function Register({navigation}: Props) {
           onChangeText={text => {
             formData.password = text;
           }}
+          secureTextEntry={true}
         />
         <TextInput
           style={[InputStl.container, TextStl.base]}
@@ -82,6 +83,7 @@ export function Register({navigation}: Props) {
           onChangeText={text => {
             formData.rePassword = text;
           }}
+          secureTextEntry={true}
         />
         <TextInput
           style={[InputStl.container, TextStl.base]}
