@@ -2,6 +2,7 @@ import sys, os
 from flask import Blueprint, jsonify, request, make_response
 import datetime
 from .model import BlipCaptioningModel
+from .translator import translate_sentence
 TEMP_PATH = './UserUploaded/'
 ChinhSuaDataPath = 'UserGeneratedCaption.txt'
 bp = Blueprint('captioning', __name__, url_prefix='/')
@@ -35,6 +36,7 @@ def upload_file():
         #, encoding='utf-8')
         f.save(fileName)
         stringPredict = model.generate_caption (fileName)
+        stringPredict = translate_sentence (stringPredict)
     response = make_response(stringPredict, 200)
     response.mimetype = "text/plain"
     return response 

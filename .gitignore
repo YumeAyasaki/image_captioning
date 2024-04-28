@@ -2,3 +2,5 @@
 server/modules/captioning/__pycache__/__init__.cpython-311.pyc
 server/modules/captioning/__pycache__/model.cpython-311.pyc
 server/UserUploaded/*
+server/modules/captioning/__pycache__/__init__.cpython-311.pyc
+TestTranslate.py
