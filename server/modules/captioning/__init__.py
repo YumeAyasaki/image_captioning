@@ -2,17 +2,12 @@ import sys, os
 from flask import Blueprint, jsonify, request, make_response
 import datetime
 from .model import BlipCaptioningModel
-from .translator import translate_sentence
-TEMP_PATH = './UserUploaded/'
-ChinhSuaDataPath = 'UserGeneratedCaption.txt'
-bp = Blueprint('captioning', __name__, url_prefix='/')
+
+bp = Blueprint('captioning', __name__, url_prefix='/api/caption') # May need to add captioning behind later, if it's needed
 model = BlipCaptioningModel()
-@bp.route ('/testing', methods=['GET'])
-def returnTest():
-    response = make_response("TestTestTest", 200)
-    return response
-@bp.route('/generate', methods=['POST'])
-def generate_caption():
+
+@bp.route('/url/', methods=['POST'])
+def generate_caption_url():
     # Get the image URL from the request
     image_url = request.json['image_url']
     # Get current time stamp
@@ -41,25 +36,14 @@ def upload_file():
     response.mimetype = "text/plain"
     return response 
 
-@bp.route('/chinhsua', methods=['POST', 'GET'])
-def chinh_sua():
-    print ("chinhsua route")
-    print (request)
-    if (request.method == 'POST') or (request.method == 'GET'):
-        if request.files["file"].filename == '':
-            print ('No selected file')
-            return 'No selected file'
-        #print ("Ayyyy: ",request.form["ChinhSuaBox"])
-        f = request.files["file"]
-        #print ("Correct Caption: ",request.form["ChinhSuaText"])
-        fileName = TEMP_PATH + str(os.getpid()) +'.'+ (request.files["file"].filename.split('.')[-1])
-        #, encoding='utf-8')
-        with open(TEMP_PATH + ChinhSuaDataPath, 'a+') as file:
-            file.write(request.form["ChinhSuaText"]+'\n')
-            file.write(fileName+'\n')
-            file.write("_\n")
-        f.save(fileName)
-        stringPredict = "Good"
-    response = make_response(stringPredict, 200)
-    response.mimetype = "text/plain"
-    return response 
+@bp.route('/image/', methods=['POST'])
+def generate_caption_image():
+    # Get the image from the request
+    image = request.files.get('image')
+    # Get current time stamp
+    time = datetime.datetime.now()
+    # Generate the caption
+    caption = model.generate_caption(image)
+    time_to_generate = datetime.datetime.now() - time
+    # Return the caption as JSON
+    return jsonify({'caption': caption, 'time_to_generate': time_to_generate.total_seconds()})

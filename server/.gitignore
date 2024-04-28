@@ -1,6 +1,9 @@
 .conda
 app.log
+*.pyc
+__pycache__
+__pycache__/
 
 # Kwang's thingy
 note.md
-temp_2.ipynb
+# temp_2.ipynb

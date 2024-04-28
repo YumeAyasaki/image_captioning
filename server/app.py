@@ -6,11 +6,11 @@ from flask import render_template
 from flask import request, make_response
 from flask import send_file
 from logging.config import dictConfig
-#from flask_wtf.csrf import CSRFProtect
-from modules.captioning import bp
-import os
-#app = Flask(__name__)
-#csrf = CSRFProtect()
+
+from modules.captioning import bp as caption_bp
+from modules.users import bp as user_bp
+from database import db
+
 def define_logging():
     dictConfig({
         'version': 1,
@@ -45,16 +45,12 @@ def create_app():
     CORS(app)
 
     # Route/Blueprint here
-    app.register_blueprint(bp)
-    #csrf.exempt(bp)
-    return app
-
-app = create_app()
-@app.route('/', methods=['GET', 'POST'])
+    app.register_blueprint(caption_bp)
+    app.register_blueprint(user_bp)
+    
 def hello():
     return render_template('index.html')
 @app.route('/<path:path>')
-def static_file(path):
     return app.send_static_file(path)
 
 def get_bp_urls(blueprint):
@@ -65,5 +61,8 @@ def get_bp_urls(blueprint):
 a = get_bp_urls(bp)
 print (a)
 if __name__ == '__main__':
+    app = create_app()
+    db.init_db()
+    # navigation.init()
     print('Initialize completely...')
     app.run(debug=True)
