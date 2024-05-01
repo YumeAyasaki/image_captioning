@@ -47,22 +47,31 @@ def create_app():
     # Route/Blueprint here
     app.register_blueprint(caption_bp)
     app.register_blueprint(user_bp)
+    return app
     
 def hello():
     return render_template('index.html')
-@app.route('/<path:path>')
-    return app.send_static_file(path)
+#@app.route('/<path:path>')
+#    return app.send_static_file(path)
 
 def get_bp_urls(blueprint):
     from flask import Flask
     temp_app = Flask(__name__) 
     temp_app.register_blueprint(blueprint)
     return [str(p) for p in temp_app.url_map.iter_rules()]
-a = get_bp_urls(bp)
+
+#Uncomment to print all routes
+a = get_bp_urls(caption_bp)
 print (a)
+a = get_bp_urls(user_bp)
+print (a)
+
 if __name__ == '__main__':
     app = create_app()
     db.init_db()
     # navigation.init()
     print('Initialize completely...')
     app.run(debug=True)
+else:
+    app = create_app()
+    db.init_db()
