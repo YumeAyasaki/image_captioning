@@ -41,16 +41,16 @@ def register():
 
 @bp.route('/login/', methods=['POST'])
 def login():
-    data = request.get_json()
-
+    data = request.get_json(force=True)
+    print ("/login/ data: ",data)
     filters = {
         'username': data['username'],
     }
+    print ("/login/ filters: ",data)
     try:
         user = db.query(User, filters)
     except NameError:
         print(sys.exc_info()[0])
-
         return jsonify({'message': 'Đăng nhập thất bại.'}), 400
 
     if user is None or user == []:

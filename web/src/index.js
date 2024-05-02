@@ -6,7 +6,10 @@ import Blogs from "./pages/Blogs";
 import Contact from "./pages/Contact";
 import NoPage from "./pages/NoPage";
 import Login from "./Login";
+import Register from "./Register";
+
 import Sex from "./Sex";
+import "./App.css";
 export default function App() {
   return (
     <BrowserRouter>
@@ -18,6 +21,7 @@ export default function App() {
           <Route path="*" element={<NoPage />} />
         </Route>
         <Route path="/login" element={<Login/>} />
+        <Route path="/register" element={<Register/>} />
         <Route path="/captioning" element={<Sex/>} />
       </Routes>
     </BrowserRouter>
@@ -25,4 +29,4 @@ export default function App() {
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+root.render(<App/>);
