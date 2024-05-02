@@ -1,9 +1,12 @@
 // Login.js
 //import React, { useState } from "react";
-import { useState } from "react";
+import { useState, createContext, useContext } from "react";
+import {UserContext} from "./index.js";
+import {useNavigate, useLocation } from 'react-router-dom'
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 //import "./App.css";
+
 
 async function loginUser(credentials) {
   // Make a POST request to your server with credentials
@@ -28,25 +31,28 @@ async function loginUser(credentials) {
 }
 
 export default function Login({ setToken }) {
+  console.log (UserContext);
+  const {user, setUser} = useContext(UserContext);
+
   const { register, handleSubmit, formState: { errors }} = useForm(); 
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
   const [loginError, setLoginError] = useState('');
+
+  // Get redirect location or provide fallback
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || "/";
+
   const onSubmit = (data) => {
     try { 
-      loginUser(data).then ((token) => {console.log (token ['token']); return token ['token'].json();}).then ((message) => {console.log(message);});
+      loginUser(data).then ((token) => {console.log (token ['token']); return token ['token'].json();}) .then 
+      ((message) => {console.log(message.token); setUser(message.token); console.log (user);navigate(from, { replace: true });});
     } catch (error) {
       setLoginError('Invalid credentials. Please try again.');
     }
   };
 
-  //const handleSubmit = async (e) => {
-  //  e.preventDefault();
-  //  const token = await loginUser({ username, password });
-  //  setToken(token); // Save the token
-  //};
-
-  // Render your login form here
   return (
     <>
     <p className="title">Login Form</p>
