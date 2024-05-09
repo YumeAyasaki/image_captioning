@@ -47,7 +47,12 @@ export default function Login({ setToken }) {
   const onSubmit = (data) => {
     try { 
       loginUser(data).then ((token) => {console.log (token ['token']); return token ['token'].json();}) .then 
-      ((message) => {console.log(message.token); setUser(message.token); console.log (user);navigate(from, { replace: true });});
+      ((message) => {
+          console.log(message.token);
+          setUser(message.token);
+          console.log (user);
+          navigate(from, { replace: true });
+        });
     } catch (error) {
       setLoginError('Invalid credentials. Please try again.');
     }

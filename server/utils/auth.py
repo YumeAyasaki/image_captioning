@@ -22,7 +22,8 @@ def token_required(func):
         token = None
         if 'Authorization' in request.headers:
             token = request.headers['Authorization'].split()[1]
-
+        else:
+            return jsonify({'message': 'Header không chứa Authorization.'}), 401
         if not token or token == 'null':
             return jsonify({'message': 'Không tìm thấy token.'}), 401
 

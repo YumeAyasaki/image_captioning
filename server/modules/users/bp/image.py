@@ -31,6 +31,7 @@ def add(user):
 
 @bp.route('/delete/<id>', methods=['DELETE'])
 @token_required
+
 def delete(user, id):
     image = db.query(Image, {'id': id})
     if image is None or image == []:

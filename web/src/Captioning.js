@@ -1,6 +1,6 @@
 import React from'react';
 import './index.css';
-function Sex() {
+function Captioning() {
   return(
     //<div className="Sex">
       <iframe src="upload.html" title="captioning page" id = "captioning"></iframe>
@@ -11,4 +11,4 @@ function Sex() {
   );
 }
 
-export default Sex;
+export default Captioning;

@@ -11,7 +11,9 @@ import NoPage from "./pages/NoPage";
 import Login from "./Login";
 import Register from "./Register";
 import PrivateRoute, {Isauth} from './PrivateRoute'
-import Sex from "./Sex";
+import Captioning from "./Captioning";
+import ImageUploader from "./ImageUploader";
+
 import "./App.css";
 //import {Routes as sexRoutes} from "./Routes_T";
 //import AuthProvider from "./AuthProvider_T";
@@ -32,7 +34,11 @@ export default function App() {
         <UserContext.Provider value={{ user, setUser }}>
             <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Layout />}>
+                <Route path="/" element={
+                    <PrivateRoute>
+                <Layout />
+                </PrivateRoute>
+                }>
                 <Route index element={<Home />} />
                 <Route path="blogs" element={<Blogs />} />
                 <Route path="contact" element={<Contact />} />
@@ -42,11 +48,16 @@ export default function App() {
                 <Route path="/register" element={<Register/>} />
                 <Route path='/captioning' element={
                     <PrivateRoute>
-                    <Sex/>
+                    <Captioning/>
+                    </PrivateRoute>
+                } />
+                <Route path='/ImageUploader' element={
+                    <PrivateRoute>
+                    <ImageUploader/>
                     </PrivateRoute>
                 } />
 
-                //<Route path="/captioning" element={<Sex/>} />
+                //<Route path="/captioning" element={<Captioning/>} />
             </Routes>
             </BrowserRouter>
         </UserContext.Provider>
