@@ -111,10 +111,16 @@ export function ImageScreen({navigation, route}: Props) {
   const handleUpload = async () => {
     let res = null;
     const token = await getToken();
-    const req = {
+    let req = {
       ...formData,
-      url: uri,
+      url: '',
+      image_file: '',
     };
+    if (params.type === 'url') {
+      req.url = uri;
+    } else {
+      req.image_file = uri;
+    }
     try {
       res = await ImageAPI.add(req, token);
     } catch (e) {
@@ -183,12 +189,10 @@ export function ImageScreen({navigation, route}: Props) {
             />
           )}
           <View>
-            {params.type === 'url' && (
-              <Button
-                text={'Thêm vào dữ liệu'}
-                onPress={() => setIsUploading(true)}
-              />
-            )}
+            <Button
+              text={'Thêm vào dữ liệu'}
+              onPress={() => setIsUploading(true)}
+            />
             <Button text={'Gửi'} onPress={() => handleSend()} />
           </View>
         </View>

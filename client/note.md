@@ -6,3 +6,5 @@ Finalize on the image capturing thingy.
     - react-native-image-picker alone can handle both camera and gallery.
     - As of now, react-native-vision-camera is only viable if the app is far more complex. Like, if the user needs to edit the image before sending to the server, or before sharing.
     - F*ck u react-native-vision-camera!!!
+
+adb reverse tcp:8081 tcp:8081

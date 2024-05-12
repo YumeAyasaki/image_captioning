@@ -89,7 +89,9 @@ export function Database({navigation}: Props) {
         <BlackBackgroundModal>
           <View>
             <Image
-              source={{uri: preview.url}}
+              source={{
+                uri: preview.url !== '' ? preview.url : preview.image_file,
+              }}
               style={{width: 300, height: 300}}
             />
             <Text style={styles.titlePreview}>{preview.title}</Text>
