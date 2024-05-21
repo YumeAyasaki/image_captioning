@@ -1,11 +1,11 @@
 import logging
 
-from infrastructure.config.models import AppConfig
+from config import Config
 from infrastructure.log.formatters import MainConsoleFormatter
 
 DEFAULT_LOGGING_LEVEL: int = logging.INFO
 
-def configure_logging(config: AppConfig) -> None:
+def configure_logging(config: Config) -> None:
     logging_level: int = logging.DEBUG if config.debug else DEFAULT_LOGGING_LEVEL
 
     console_handler = logging.StreamHandler()

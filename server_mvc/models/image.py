@@ -7,8 +7,9 @@ class Image(CreatedUpdatedAtMixin):
     __tablename__ = "images"
 
     id: Mapped[str] = mapped_column(primary_key=True)
-    title: Mapped[str | None] = mapped_column(unique=True)
-    data: Mapped[str]
+    title: Mapped[str | None]
+    url: Mapped[str | None]
+    image_file: Mapped[str | None]
     annotation: Mapped[str]
     
     user_id: Mapped[str] = mapped_column(ForeignKey('users.id'))
