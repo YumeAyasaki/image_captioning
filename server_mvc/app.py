@@ -1,10 +1,11 @@
-from flask import Flask
+from flask import Flask, g
 
 from infrastructure.log import configure_logging
 from infrastructure.database.session import create_session_maker
 import middlewares
 import routes
 from config import load_config
+from controllers.captioning import CaptioningController
 
 def main() -> Flask:
     # config = load_config()
@@ -16,6 +17,14 @@ def main() -> Flask:
 
     middlewares.register(app, session_maker)
     routes.register(app)
+    
+    # def load_model(app: Flask):
+    #     with app.app_context():
+    #         g.model = CaptioningController()
+    #         print('Initialize model.')
+    #         return app
+    
+    # app = load_model(app)
 
     return app
 
