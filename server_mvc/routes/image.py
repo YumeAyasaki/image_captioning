@@ -1,7 +1,7 @@
 from flask import Blueprint, g, request, jsonify
 
 from controllers.image import ImageController
-from schemas.image import Image, ImageCreate, ImageUpdate
+from schemas.image import ImageCreate, ImageUpdate
 from utils.auth import token_required
 
 image_blueprint = Blueprint("image", __name__, url_prefix="/image")
@@ -12,7 +12,7 @@ def get_all(user):
     session = g.session
     image_controller = ImageController(session)
     images = image_controller.get_all(user)
-    return jsonify({'images': images}), 201
+    return jsonify({'images': [image.model_dump(mode='json') for image in images]}), 201
 
 @image_blueprint.route('/add/', methods=['POST'])
 @token_required
@@ -40,7 +40,7 @@ def edit(user, image_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
-@image_blueprint.route('/<string:image_id>', methods=['DELETE'])
+@image_blueprint.route('/delete/<string:image_id>', methods=['DELETE'])
 @token_required
 def delete(user, image_id):
     session = g.session

@@ -36,7 +36,14 @@ class ImageController(Controller[ImageModel]):
         session = self.session
         try:
             db_images = session.query(ImageModel).filter(ImageModel.user_id == user.id)
-            images = [Image(image) for image in db_images]
+            print(db_images)
+            images = [Image(id=image.id,
+                title=image.title,
+                url=image.url,
+                image_file=image.image_file,
+                annotation=image.annotation,
+                user_id=image.user_id,
+            ) for image in db_images]
             return images
             
         except Exception as e:

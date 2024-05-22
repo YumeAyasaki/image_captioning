@@ -13,6 +13,9 @@ def register():
     
     try:
         data = request.get_json()
+        if data['password'] != data['rePassword']:
+            return jsonify({'message': 'Mật khẩu không trùng khớp.'}), 400
+        data.pop('rePassword', None)
         user_data = UserCreate(**data)
         user_controller.create_user(user_data)
         return jsonify({'msg': 'Người dùng đã được tạo thành công.'}), 201
@@ -36,3 +39,7 @@ def login():
 @token_required
 def get_user(user):
     return jsonify({'user': user.model_dump(mode='json')}), 201
+
+@user_blueprint.route('/logout/', methods=['GET'])
+def logout():
+    return jsonify({'msg': 'What do you expect here?'}), 201

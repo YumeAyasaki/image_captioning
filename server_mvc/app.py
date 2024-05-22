@@ -17,14 +17,6 @@ def main() -> Flask:
 
     middlewares.register(app, session_maker)
     routes.register(app)
-    
-    # def load_model(app: Flask):
-    #     with app.app_context():
-    #         g.model = CaptioningController()
-    #         print('Initialize model.')
-    #         return app
-    
-    # app = load_model(app)
 
     return app
 

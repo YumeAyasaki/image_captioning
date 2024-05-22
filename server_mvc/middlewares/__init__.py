@@ -6,4 +6,4 @@ from .caption import CaptioningMiddleware
 
 def register(app: Flask, session_maker: sessionmaker) -> None:
     DatabaseMiddleware(session_maker).register(app)
-    CaptioningMiddleware().register(app)
+    # CaptioningMiddleware().register(app)
