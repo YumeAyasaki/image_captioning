@@ -90,6 +90,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('my-upload-key.keystore')
+            storePassword '19112002'
+            keyAlias 'your_key_alias'
+            keyPassword '19112002'
+        }
     }
     buildTypes {
         debug {
