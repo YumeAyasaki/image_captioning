@@ -7,7 +7,7 @@ class Image(CreatedUpdatedAtMixin):
     __tablename__ = "images"
 
     id: Mapped[str] = mapped_column(primary_key=True)
-    title: Mapped[str | None]
+    title: Mapped[str]
     url: Mapped[str | None]
     image_file: Mapped[str | None]
     annotation: Mapped[str]

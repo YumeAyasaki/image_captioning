@@ -41,7 +41,7 @@ def upload_file():
     response.mimetype = "text/plain"
     return response 
 
-@caption_blueprint.route('/image/', methods=['POST'])
+@caption_blueprint.route('/image/', methods=['GET'])
 def generate_caption_image():
     # Get the image from the request
     image = request.files.get('image')
