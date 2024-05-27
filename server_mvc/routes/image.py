@@ -1,7 +1,7 @@
 from flask import Blueprint, g, request, jsonify
 
 from controllers.image import ImageController
-from schemas.image import ImageCreate, ImageUpdate
+from dto.image import ImageCreate, ImageUpdate
 from utils.auth import token_required
 
 image_blueprint = Blueprint("image", __name__, url_prefix="/image")

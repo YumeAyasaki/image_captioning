@@ -6,7 +6,6 @@ from .base import CreatedUpdatedAtMixin
 class User(CreatedUpdatedAtMixin):
     __tablename__ = "users"
 
-    id: Mapped[str] = mapped_column(primary_key=True)
     username: Mapped[str | None] = mapped_column(unique=True)
     password: Mapped[str]
     email: Mapped[str]

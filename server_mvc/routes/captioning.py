@@ -2,14 +2,14 @@ from flask import Blueprint, g, request, jsonify, make_response
 import datetime
 
 from controllers.image import ImageController
-from schemas.image import Image, ImageCreate, ImageUpdate
+from dto.image import Image, ImageCreate, ImageUpdate
 from utils.translate import translate_sentence
 from controllers.captioning import CaptioningController
 
 caption_blueprint = Blueprint("caption", __name__, url_prefix="/caption")
-model = CaptioningController()
+# model = CaptioningController()
 
-@caption_blueprint.route('/url/', methods=['GET'])
+@caption_blueprint.route('/url/', methods=['POST'])
 def generate_caption_url():
     # model = g.model
     # Get the image URL from the request
@@ -41,7 +41,7 @@ def upload_file():
     response.mimetype = "text/plain"
     return response 
 
-@caption_blueprint.route('/image/', methods=['GET'])
+@caption_blueprint.route('/image/', methods=['POST'])
 def generate_caption_image():
     # Get the image from the request
     image = request.files.get('image')

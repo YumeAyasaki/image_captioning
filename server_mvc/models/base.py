@@ -1,7 +1,7 @@
 import datetime
-
 from sqlalchemy import func, MetaData
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, registry
+import uuid
 
 convention = {
     "ix": "ix_%(column_0_label)s",  # INDEX
@@ -16,6 +16,18 @@ mapper_registry = registry(metadata=MetaData(naming_convention=convention))
 class BaseModel(DeclarativeBase):
     registry = mapper_registry
     metadata = mapper_registry.metadata
+    id: Mapped[str] = mapped_column(primary_key=True, server_default=func.gen_random_uuid())
+    
+    def to_dict(self) -> dict:
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+    
+    @classmethod
+    def from_dict(cls, data: dict) -> "BaseModel":
+        instance = cls()
+        for key, value in data:
+            if key != 'id' and not getattr(instance, key, None) :
+                setattr(instance, key, value)
+        return instance
 
 class CreatedUpdatedAtMixin(BaseModel):
     """

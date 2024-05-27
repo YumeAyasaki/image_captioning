@@ -1,7 +1,7 @@
 from flask import Blueprint, g, request, jsonify
 
 from controllers.user import UserController
-from schemas.user import UserCreate, UserLogin
+from dto.user import UserCreate, UserLogin
 from utils.auth import token_required
 
 user_blueprint = Blueprint("user", __name__, url_prefix="/user")

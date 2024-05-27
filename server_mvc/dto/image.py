@@ -1,6 +1,8 @@
 from pydantic import BaseModel, Field
 
-class Image(BaseModel):
+from .base import BaseDto
+
+class Image(BaseDto):
     id: str = Field(...)
     title: str = Field(...)
     url: str = Field(...)

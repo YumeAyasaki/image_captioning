@@ -1,9 +1,10 @@
 import uuid
 
 from models.image import Image as ImageModel
-from schemas.image import Image, ImageCreate
-from schemas.user import User
+from dto.image import Image, ImageCreate
+from dto.user import User
 from .base import Controller
+from dao.image import ImageDao
 
 class ImageController(Controller[ImageModel]):
     def add(self, image: ImageCreate, user: User):
