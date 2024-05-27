@@ -11,7 +11,7 @@ image_blueprint = Blueprint("image", __name__, url_prefix="/image")
 def get_all(user):
     session = g.session
     image_controller = ImageController(session)
-    images = image_controller.get_all(user)
+    images = image_controller.get_all_from_user(user)
     return jsonify({'images': [image.model_dump(mode='json') for image in images]}), 201
 
 @image_blueprint.route('/add/', methods=['POST'])
@@ -27,7 +27,7 @@ def add(user):
     except Exception as e:
         return jsonify({'error': str(e)}), 400
     
-@image_blueprint.route('/<string:image_id>', methods=['PUT'])
+@image_blueprint.route('/<string:image_id>/', methods=['PUT'])
 @token_required
 def edit(user, image_id):
     session = g.session
@@ -40,7 +40,7 @@ def edit(user, image_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
-@image_blueprint.route('/delete/<string:image_id>', methods=['DELETE'])
+@image_blueprint.route('/delete/<string:image_id>/', methods=['DELETE'])
 @token_required
 def delete(user, image_id):
     session = g.session
@@ -50,3 +50,17 @@ def delete(user, image_id):
         return jsonify({'msg': 'Xóa ảnh thành công.'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 400
+    
+@image_blueprint.route('/all/', methods=['GET']) # Sorry if it doesn't make sense, me neither
+def get_all_global():
+    session = g.session
+    image_controller = ImageController(session)
+    images = image_controller.get_all()
+    return jsonify({'images': [image.model_dump(mode='json') for image in images]}), 201
+
+@image_blueprint.route('/<string:image_id>/', methods=['GET'])
+def get_one_global(image_id):
+    session = g.session
+    image_controller = ImageController(session)
+    image = image_controller.get_one(image_id)
+    return jsonify({'image': image.model_dump(mode='json')}), 201

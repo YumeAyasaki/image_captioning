@@ -25,15 +25,15 @@ class Dao(Generic[Model, Dto]):
         return self.to_dto(model)
 
     def update(self, data: BaseDto) -> Dto:
-        model = self.session.query(Model).get(data.id)
+        model = self.session.query(self.model_cls).get(data.id)
         if not model:
             raise Exception(f"Model with ID {id} not found")
 
         # Update attributes using a combination of dictionary unpacking and explicit assignment
         # for clarity and potential validation
-        update_data = data.model_dump()(exclude_unset=True)  # Exclude unset fields to avoid overwrites
-        for field, value in update_data.items():
-            setattr(model, field, value)
+        update_data = data.model_dump()
+        for field in update_data:
+            setattr(model, field, update_data[field])
 
         self.session.commit()
         self.session.refresh(model)
