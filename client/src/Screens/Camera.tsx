@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export function CameraScreen({navigation}: Props) {
+export function CameraScreen({navigation, route}: Props) {
+  const params = route.params;
   const {hasPermission, requestPermission} = useCameraPermission();
   const [cameraPermission, setCameraPermission] = useState(hasPermission);
   if (!hasPermission) {
@@ -86,7 +87,7 @@ export function CameraScreen({navigation}: Props) {
     console.log(imageSize);
     // Make uri from the photo and send it to the image screen
     // Platform is Android
-    navigation.navigate('Image', {
+    navigation.navigate(params.to, {
       type: 'file',
       value: tempUri,
       size: imageSize,

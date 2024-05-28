@@ -32,7 +32,8 @@ import {Login, LoginProps} from './Login';
 import {Register, RegisterProps} from './Register';
 import {CameraScreen as Camera, CameraProps} from './Camera';
 import {Select, SelectProps} from './Select';
-import {ImageScreen as Image, ImageProps} from './Image';
+import {CaptioningScreen as Captioning, CaptioningProps} from './Captioning';
+import {StoreScreen as Store, StoreProps} from './Store';
 import {Url, UrlProps} from './Url';
 import {Database, DatabaseProps} from './Database';
 
@@ -72,10 +73,18 @@ export const SelectScreen = (props: SelectProps) => {
   );
 };
 
-export const ImageScreen = (props: ImageProps) => {
+export const CaptioningScreen = (props: CaptioningProps) => {
   const navigation = props.navigation;
   const otherProps = {...props};
-  return <Screen navigation={navigation} children={Image} props={otherProps} />;
+  return (
+    <Screen navigation={navigation} children={Captioning} props={otherProps} />
+  );
+};
+
+export const StoreScreen = (props: StoreProps) => {
+  const navigation = props.navigation;
+  const otherProps = {...props};
+  return <Screen navigation={navigation} children={Store} props={otherProps} />;
 };
 
 export const UrlScreen = (props: UrlProps) => {

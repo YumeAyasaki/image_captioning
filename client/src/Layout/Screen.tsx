@@ -7,9 +7,10 @@ import {
   RegisterScreen,
   CameraScreen,
   SelectScreen,
-  ImageScreen,
+  CaptioningScreen,
   UrlScreen,
   DatabaseScreen,
+  StoreScreen,
 } from '../Screens';
 import {RootStackParamList} from '../Constants/ScreenTypes';
 
@@ -29,7 +30,12 @@ export default function Screen() {
       />
       <Stack.Screen name="Camera" component={CameraScreen} options={options} />
       <Stack.Screen name="Select" component={SelectScreen} options={options} />
-      <Stack.Screen name="Image" component={ImageScreen} options={options} />
+      <Stack.Screen
+        name="Captioning"
+        component={CaptioningScreen}
+        options={options}
+      />
+      <Stack.Screen name="Store" component={StoreScreen} options={options} />
       <Stack.Screen name="Url" component={UrlScreen} options={options} />
       <Stack.Screen
         name="Database"

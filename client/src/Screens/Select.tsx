@@ -27,9 +27,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export function Select({navigation}: Props) {
-  console.log(navigation);
-
+export function Select({navigation, route}: Props) {
+  const params = route.params;
   const handleChoosePhoto = async () => {
     const options: any = {
       mediaType: 'photo',
@@ -45,7 +44,7 @@ export function Select({navigation}: Props) {
     if (!imageObject.uri || !imageObject.width || !imageObject.height) {
       return;
     }
-    navigation.navigate('Image', {
+    navigation.navigate(params.to, {
       type: 'file',
       value: imageObject.uri,
       size: {width: imageObject.width, height: imageObject.height},

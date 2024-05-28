@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export function Url({navigation}: Props) {
-  console.log(navigation);
+export function Url({navigation, route}: Props) {
+  const params = route.params;
   const urlRef = React.createRef<TextInput>();
   let url = '';
   let imageSize = {width: 0, height: 0};
@@ -49,7 +49,7 @@ export function Url({navigation}: Props) {
           console.log(error);
         },
       );
-      navigation.navigate('Image', {
+      navigation.navigate(params.to, {
         type: 'url',
         value: url,
         size: imageSize,

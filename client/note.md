@@ -8,3 +8,10 @@ Finalize on the image capturing thingy.
     - F*ck u react-native-vision-camera!!!
 
 adb reverse tcp:8081 tcp:8081
+
+adb shell input keyevent 82
+
+New to-do list (dunno if the above thingy is still in priority or not).
+    - Rebuild the database screen: Just image with a border, probably at the size of 1/4 screen-width and 3 images per row.
+    - Make a image screen.
+    - Delete image table.
