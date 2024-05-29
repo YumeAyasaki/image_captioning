@@ -24,4 +24,7 @@ export type RootStackParamList = {
     size: {width: number; height: number};
   };
   Database: undefined;
+  Image: {
+    id: string;
+  };
 };

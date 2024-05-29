@@ -1,17 +1,30 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
-import {View, StyleSheet, Text, Image, Alert} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  Dimensions,
+  Pressable,
+  ScrollView,
+} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
-import {TextStl, theme} from '../Constants/Style';
+import {TextStl} from '../Constants/Style';
 import ImageAPI from '../Services/imageAPI';
 import {getToken} from '../Utils/user';
-import DatabaseTable from '../Components/DatabaseTable';
-import BlackBackgroundModal from '../Components/UploadModal';
-import Button from '../Components/Button';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Database'>;
+
+type ComponentProps = {
+  id: string;
+  annotation: string[];
+  image_file: string;
+  url: string;
+  user_id: string;
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -30,24 +43,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   sameRow: {flexDirection: 'row'},
-  tableHeader: {
-    color: 'black',
-    fontWeight: 'bold',
-    backgroundColor: theme.primary,
+  imageRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap', // Allow rows to wrap if necessary
   },
-  titlePreview: {
-    color: 'black',
-    fontWeight: 'bold',
-  },
-  annotationPreview: {
-    color: 'black',
+  image: {
+    width: Dimensions.get('window').width / 3 - 20, // Calculate width for 3 images per row with padding
+    height: Dimensions.get('window').width / 3 - 20, // Maintain aspect ratio (adjust if needed)
+    margin: 10, // Add margin for spacing between images
   },
 });
 
 export function Database({navigation}: Props) {
   const [data, setData] = useState([]);
-  const [isPreview, setIsPreview] = useState(false);
-  const [preview, setPreview] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       const token = await getToken();
@@ -57,67 +65,29 @@ export function Database({navigation}: Props) {
     fetchData();
     console.log(data);
   }, []);
-  const onDelete = async () => {
-    const token = await getToken();
-    try {
-      await ImageAPI.delete(preview.id, token);
-    } catch (err) {
-      Alert.alert('Xoá thất bại', 'Có lỗi xảy ra khi xoá ảnh', [
-        {
-          text: 'OK',
-          onPress: () => {
-            setIsPreview(false);
-            navigation.replace('Database');
-          },
-        },
-      ]);
-      return;
-    }
-    Alert.alert('Xoá thành công', 'Ảnh đã được xoá thành công', [
-      {
-        text: 'OK',
-        onPress: () => {
-          setIsPreview(false);
-          navigation.replace('Database');
-        },
-      },
-    ]);
+
+  const imageComponent = (image: ComponentProps) => {
+    const source = image.image_file === '' ? image.url : image.image_file;
+    return (
+      <Pressable onPress={() => navigation.navigate('Image', {id: image.id})}>
+        <Image style={styles.image} source={{uri: source}} />
+      </Pressable>
+    );
   };
+
   return (
-    <View style={styles.container}>
-      {isPreview && (
-        <BlackBackgroundModal>
-          <View>
-            <Image
-              source={{
-                uri: preview.url !== '' ? preview.url : preview.image_file,
-              }}
-              style={{width: 300, height: 300}}
-            />
-            <Text style={styles.titlePreview}>{preview.title}</Text>
-            <Text style={styles.annotationPreview}>{preview.annotation}</Text>
-            <View style={styles.sameRow}>
-              <Button
-                style={styles.container}
-                text="Xoá"
-                onPress={() => onDelete()}
-              />
-              <Button
-                style={styles.container}
-                text="Huỷ"
-                onPress={() => setIsPreview(false)}
-              />
-            </View>
-          </View>
-        </BlackBackgroundModal>
-      )}
+    <ScrollView style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={TextStl.h1}>Database</Text>
       </View>
       <View style={styles.contentContainer}>
-        <View>{DatabaseTable({data, setIsPreview, setPreview})}</View>
+        <View style={styles.imageRow}>
+          {data.map((image, key) => (
+            <View key={key}>{imageComponent(image)}</View>
+          ))}
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

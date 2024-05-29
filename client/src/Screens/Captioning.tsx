@@ -1,24 +1,12 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react';
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  Alert,
-  Text,
-  Image,
-  TextInput,
-  ViewStyle,
-} from 'react-native';
+import {View, StyleSheet, Dimensions, Alert, Text, Image} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
 import CaptioningAPI from '../Services/captionAPI';
 import Button from '../Components/Button';
-import {InputStl, TextStl, theme} from '../Constants/Style';
-import BlackBackgroundModal from '../Components/UploadModal';
-import ImageAPI from '../Services/imageAPI';
-import {getToken} from '../Utils/user';
+import {TextStl} from '../Constants/Style';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Captioning'>;
 

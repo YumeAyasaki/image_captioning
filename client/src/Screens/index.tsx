@@ -36,6 +36,7 @@ import {CaptioningScreen as Captioning, CaptioningProps} from './Captioning';
 import {StoreScreen as Store, StoreProps} from './Store';
 import {Url, UrlProps} from './Url';
 import {Database, DatabaseProps} from './Database';
+import {ImageS, ImageProps} from './Image'; // Image is duplicated
 
 export const HomeScreen = (props: HomeProps) => {
   const navigation = props.navigation;
@@ -98,5 +99,13 @@ export const DatabaseScreen = (props: DatabaseProps) => {
   const otherProps = {...props};
   return (
     <Screen navigation={navigation} children={Database} props={otherProps} />
+  );
+};
+
+export const ImageScreen = (props: ImageProps) => {
+  const navigation = props.navigation;
+  const otherProps = {...props};
+  return (
+    <Screen navigation={navigation} children={ImageS} props={otherProps} />
   );
 };

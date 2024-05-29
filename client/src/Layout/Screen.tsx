@@ -11,6 +11,7 @@ import {
   UrlScreen,
   DatabaseScreen,
   StoreScreen,
+  ImageScreen,
 } from '../Screens';
 import {RootStackParamList} from '../Constants/ScreenTypes';
 
@@ -42,6 +43,7 @@ export default function Screen() {
         component={DatabaseScreen}
         options={options}
       />
+      <Stack.Screen name="Image" component={ImageScreen} options={options} />
     </Stack.Navigator>
   );
 }
