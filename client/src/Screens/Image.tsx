@@ -8,8 +8,10 @@ import {
   Image,
   ScrollView,
   TextInput,
+  Pressable,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import Icons from 'react-native-vector-icons/Ionicons';
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
 import ImageAPI from '../Services/imageAPI';
@@ -47,7 +49,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
   },
   sameRow: {
+    display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
+    paddingRight: 10,
+  },
+  textBoxInRow: {
+    flexGrow: 1,
   },
 });
 
@@ -65,6 +73,16 @@ export function ImageS({navigation, route}: Props) {
 
   const addAnnotation = () => {
     setAnnotations(() => [...annotations, '']);
+  };
+
+  const removeAnnotation = (index: number) => {
+    setAnnotations(annotations => {
+      if (index < 0 || index >= annotations.length) {
+        // Throw an error if the index is out of bounds
+        throw new Error('Index out of range');
+      }
+      return annotations.slice(0, index).concat(annotations.slice(index + 1));
+    });
   };
 
   useEffect(() => {
@@ -181,14 +199,22 @@ export function ImageS({navigation, route}: Props) {
             {annotations.map((inputString, key) => {
               console.log(inputString);
               return (
-                <TextInput
-                  style={[InputStl.container, TextStl.base]}
-                  placeholderTextColor={theme.darkGrey}
-                  placeholder="Chú thích"
-                  defaultValue={inputString}
-                  onChangeText={text => changeValue(key, text)}
-                  key={key}
-                />
+                <View style={styles.sameRow} key={key}>
+                  <TextInput
+                    style={[
+                      InputStl.container,
+                      TextStl.base,
+                      styles.textBoxInRow,
+                    ]}
+                    placeholderTextColor={theme.darkGrey}
+                    placeholder="Chú thích"
+                    defaultValue={inputString}
+                    onChangeText={text => changeValue(key, text)}
+                  />
+                  <Pressable onPress={() => removeAnnotation(key)}>
+                    <Icons name="trash" size={30} color="red" />
+                  </Pressable>
+                </View>
               );
             })}
           </View>
