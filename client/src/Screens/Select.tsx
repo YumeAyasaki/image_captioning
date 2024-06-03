@@ -54,7 +54,7 @@ export function Select({navigation, route}: Props) {
     <View style={styles.container}>
       {/* Title app */}
       <View style={styles.titleContainer}>
-        <Text style={TextStl.h1}>Image selection</Text>
+        <Text style={TextStl.h1}>Chọn ảnh từ thiết bị</Text>
       </View>
       <View style={styles.contentContainer}>
         <View>

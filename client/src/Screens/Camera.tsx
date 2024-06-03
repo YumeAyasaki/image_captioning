@@ -97,7 +97,7 @@ export function CameraScreen({navigation, route}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={TextStl.h1}>Camera</Text>
+        <Text style={TextStl.h1}>Máy ảnh</Text>
       </View>
       {cameraPermission && (
         <View style={styles.container}>

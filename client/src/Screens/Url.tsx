@@ -60,7 +60,7 @@ export function Url({navigation, route}: Props) {
     <View style={styles.container}>
       {/* Title app */}
       <View style={styles.titleContainer}>
-        <Text style={TextStl.h1}>Image link</Text>
+        <Text style={TextStl.h1}>Lấy ảnh từ đường dẫn</Text>
       </View>
       <View style={styles.contentContainer}>
         <View>

@@ -15,6 +15,9 @@ import {RootStackParamList} from '../Constants/ScreenTypes';
 import {TextStl} from '../Constants/Style';
 import ImageAPI from '../Services/imageAPI';
 import {getToken} from '../Utils/user';
+import FloatingButton from '../Components/Floating/Button';
+import FloatingContainer from '../Components/Floating/Container';
+import UploadMethodModal from '../Components/UploadMethod';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Database'>;
 
@@ -56,6 +59,7 @@ const styles = StyleSheet.create({
 
 export function Database({navigation}: Props) {
   const [data, setData] = useState([]);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   useEffect(() => {
     const fetchData = async () => {
       const token = await getToken();
@@ -76,18 +80,34 @@ export function Database({navigation}: Props) {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={TextStl.h1}>Database</Text>
-      </View>
-      <View style={styles.contentContainer}>
-        <View style={styles.imageRow}>
-          {data.map((image, key) => (
-            <View key={key}>{imageComponent(image)}</View>
-          ))}
+    <View style={styles.container}>
+      <FloatingContainer>
+        <FloatingButton
+          iconName="cloud-upload"
+          onPress={() => setIsUploading(true)}
+        />
+      </FloatingContainer>
+      <ScrollView style={styles.container}>
+        <View style={styles.titleContainer}>
+          <Text style={TextStl.h1}>Dữ liệu người dùng</Text>
         </View>
-      </View>
-    </ScrollView>
+        <View style={styles.contentContainer}>
+          <View style={styles.imageRow}>
+            {data.map((image, key) => (
+              <View key={key}>{imageComponent(image)}</View>
+            ))}
+          </View>
+        </View>
+
+        {isUploading && (
+          <UploadMethodModal
+            navigation={navigation}
+            to="Store"
+            onClose={() => setIsUploading(false)}
+          />
+        )}
+      </ScrollView>
+    </View>
   );
 }
 

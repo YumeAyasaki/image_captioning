@@ -97,14 +97,14 @@ const NavBar = ({navigation}: Props) => {
         <UploadMethodModal
           navigation={navigation}
           to="Store"
-          useStateThing={setOnStore}
+          onClose={() => setOnStore(false)}
         />
       )}
       {onCaptioning && (
         <UploadMethodModal
           navigation={navigation}
           to="Captioning"
-          useStateThing={setOnCaptioning}
+          onClose={() => setOnCaptioning(false)}
         />
       )}
     </View>

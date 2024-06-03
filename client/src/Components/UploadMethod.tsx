@@ -6,31 +6,31 @@ import Button from './Button';
 
 type Props = {
   navigation: any;
-  useStateThing: any;
+  onClose: () => void;
   to: 'Store' | 'Captioning';
 };
 
-const UploadMethodModal = ({navigation, to, useStateThing}: Props) => {
+const UploadMethodModal = ({navigation, to, onClose}: Props) => {
   const onPressUrl = () => {
     navigation.navigate('Url', {
       to: to,
     });
-    useStateThing(false);
+    onClose();
   };
   const onPressSelect = () => {
     navigation.navigate('Select', {
       to: to,
     });
-    useStateThing(false);
+    onClose();
   };
   const onPressCamera = () => {
     navigation.navigate('Camera', {
       to: to,
     });
-    useStateThing(false);
+    onClose();
   };
   return (
-    <BlackBackgroundModal>
+    <BlackBackgroundModal onClose={onClose}>
       <View>
         <Text>Phương pháp</Text>
         <View>

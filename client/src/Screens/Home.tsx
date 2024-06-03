@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
 
 export function Home({navigation}: Props) {
   const {user} = useUser();
-  const [onStore, setOnStore] = useState<Boolean>(false);
   const [onCaptioning, setOnCaptioning] = useState<Boolean>(false);
   const handleLogout = async () => {
     removeUser();
@@ -53,13 +52,13 @@ export function Home({navigation}: Props) {
     <View style={styles.container}>
       {/* Title app */}
       <View style={styles.titleContainer}>
-        <Text style={TextStl.h1}>Chú thích hình ảnh</Text>
+        <Text style={TextStl.h1}>Chú thích hình ảnh tự động</Text>
       </View>
       <View style={styles.contentContainer}>
         <View>
           <Button
             onPress={() => setOnCaptioning(true)}
-            text={'Chú thích hình ảnh'}
+            text="Chú thích hình ảnh tự động"
           />
           <Button
             text="Xem ảnh trong dữ liệu"
@@ -67,25 +66,17 @@ export function Home({navigation}: Props) {
           />
           {user !== null && (
             <View>
-              <Button onPress={() => setOnStore(true)} text="Lưu ảnh" />
               <Text style={styles.welcomeText}>Chào mừng {user.username}.</Text>
               <Button text="Đăng xuất" onPress={handleLogout} />
             </View>
           )}
         </View>
       </View>
-      {onStore && (
-        <UploadMethodModal
-          navigation={navigation}
-          to="Store"
-          useStateThing={setOnStore}
-        />
-      )}
       {onCaptioning && (
         <UploadMethodModal
           navigation={navigation}
           to="Captioning"
-          useStateThing={setOnCaptioning}
+          onClose={() => setOnCaptioning(false)}
         />
       )}
     </View>

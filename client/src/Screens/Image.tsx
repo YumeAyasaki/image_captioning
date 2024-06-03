@@ -12,10 +12,11 @@ import {
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Icons from 'react-native-vector-icons/Ionicons';
+import FloatingButton from '../Components/Floating/Button';
+import FloatingContainer from '../Components/Floating/Container';
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
 import ImageAPI from '../Services/imageAPI';
-import Button from '../Components/Button';
 import {TextStl, theme, InputStl} from '../Constants/Style';
 import {getToken} from '../Utils/user';
 
@@ -176,51 +177,54 @@ export function ImageS({navigation, route}: Props) {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      {/* Title */}
-      <View style={styles.titleContainer}>
-        <Text style={TextStl.h1}>Image captioning</Text>
-      </View>
-      <View style={styles.contentContainer}>
-        <View>
-          {uri !== '' && (
-            <Image
-              source={{uri: uri}}
-              style={styles.previewImage}
-              resizeMode="contain"
-            />
-          )}
+    <View style={styles.container}>
+      <FloatingContainer>
+        <FloatingButton iconName="add" onPress={() => addAnnotation()} />
+        <FloatingButton iconName="send" onPress={() => sendUpdate()} />
+        <FloatingButton iconName="trash" onPress={() => sendDelete()} />
+      </FloatingContainer>
+      <ScrollView style={styles.container}>
+        {/* Title */}
+        <View style={styles.titleContainer}>
+          <Text style={TextStl.h1}>Hình ảnh</Text>
+        </View>
+        <View style={styles.contentContainer}>
           <View>
-            <Button text="Thêm chú thích" onPress={() => addAnnotation()} />
-            <Button text="Cập nhật" onPress={() => sendUpdate()} />
-            <Button text="Xóa" onPress={() => sendDelete()} />
-          </View>
-          <View>
-            {annotations.map((inputString, key) => {
-              console.log(inputString);
-              return (
-                <View style={styles.sameRow} key={key}>
-                  <TextInput
-                    style={[
-                      InputStl.container,
-                      TextStl.base,
-                      styles.textBoxInRow,
-                    ]}
-                    placeholderTextColor={theme.darkGrey}
-                    placeholder="Chú thích"
-                    defaultValue={inputString}
-                    onChangeText={text => changeValue(key, text)}
-                  />
-                  <Pressable onPress={() => removeAnnotation(key)}>
-                    <Icons name="trash" size={30} color="red" />
-                  </Pressable>
-                </View>
-              );
-            })}
+            {uri !== '' && (
+              <Image
+                source={{uri: uri}}
+                style={styles.previewImage}
+                resizeMode="contain"
+              />
+            )}
+
+            <View>
+              {annotations.map((inputString, key) => {
+                console.log(inputString);
+                return (
+                  <View style={styles.sameRow} key={key}>
+                    <Pressable onPress={() => removeAnnotation(key)}>
+                      <Icons name="trash" size={30} color="red" />
+                    </Pressable>
+                    <TextInput
+                      style={[
+                        InputStl.container,
+                        TextStl.base,
+                        styles.textBoxInRow,
+                      ]}
+                      placeholderTextColor={theme.darkGrey}
+                      placeholder="Chú thích"
+                      defaultValue={inputString}
+                      onChangeText={text => changeValue(key, text)}
+                    />
+                  </View>
+                );
+              })}
+            </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 

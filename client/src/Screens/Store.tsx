@@ -13,9 +13,10 @@ import {
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Icons from 'react-native-vector-icons/Ionicons';
+import FloatingContainer from '../Components/Floating/Container';
+import FloatingButton from '../Components/Floating/Button';
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
-import Button from '../Components/Button';
 import {InputStl, TextStl, theme} from '../Constants/Style';
 import ImageAPI from '../Services/imageAPI';
 import {getToken} from '../Utils/user';
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
   },
   previewImage: {
     width: '100%',
+    height: 300,
   },
   button: {
     marginHorizontal: 10,
@@ -130,28 +132,31 @@ export function StoreScreen({navigation, route}: Props) {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      {/* Title */}
-      <View style={styles.titleContainer}>
-        <Text style={TextStl.h1}>Image captioning</Text>
-      </View>
-      <View style={styles.contentContainer}>
-        <View>
+    <View style={styles.container}>
+      <FloatingContainer>
+        <FloatingButton iconName="send" onPress={() => handleSend()} />
+        <FloatingButton iconName="add" onPress={() => addAnnotation()} />
+      </FloatingContainer>
+      <ScrollView style={styles.container}>
+        {/* Title */}
+        <View style={styles.titleContainer}>
+          <Text style={TextStl.h1}>Lưu ảnh</Text>
+        </View>
+        <View style={styles.contentContainer}>
           {uri !== '' && (
             <Image
               source={{uri: uri}}
-              style={[styles.previewImage, {height: pictureHeight}]}
+              style={styles.previewImage}
               resizeMode="contain"
             />
           )}
           <View>
-            <Button text={'Gửi'} onPress={() => handleSend()} />
-            <Button text="Thêm chú thích" onPress={() => addAnnotation()} />
-          </View>
-          <View>
             {annotations.map((inputString, key) => {
               return (
                 <View style={styles.sameRow} key={key}>
+                  <Pressable onPress={() => removeAnnotation(key)}>
+                    <Icons name="trash" size={30} color="red" />
+                  </Pressable>
                   <TextInput
                     style={[
                       InputStl.container,
@@ -163,16 +168,13 @@ export function StoreScreen({navigation, route}: Props) {
                     defaultValue={inputString}
                     onChangeText={text => changeValue(key, text)}
                   />
-                  <Pressable onPress={() => removeAnnotation(key)}>
-                    <Icons name="trash" size={30} color="red" />
-                  </Pressable>
                 </View>
               );
             })}
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 

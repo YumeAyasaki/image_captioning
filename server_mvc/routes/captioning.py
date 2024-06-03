@@ -7,7 +7,7 @@ from utils.translate import translate_sentence
 from controllers.captioning import CaptioningController
 
 caption_blueprint = Blueprint("caption", __name__, url_prefix="/caption")
-model = CaptioningController()
+# model = CaptioningController()
 
 @caption_blueprint.route('/url/', methods=['POST'])
 def generate_caption_url():

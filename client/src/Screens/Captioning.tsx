@@ -94,7 +94,7 @@ export function CaptioningScreen({navigation, route}: Props) {
     <View style={styles.container}>
       {/* Title */}
       <View style={styles.titleContainer}>
-        <Text style={TextStl.h1}>Image captioning</Text>
+        <Text style={TextStl.h1}>Chú thích tự động</Text>
       </View>
       <View style={styles.contentContainer}>
         <View>
