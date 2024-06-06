@@ -58,36 +58,27 @@ export function CaptioningScreen({navigation, route}: Props) {
 
   const handleSend = async () => {
     let res = null;
-    if (params.type === 'url') {
-      // JSON object with params image_url
-      const req = {
-        image_url: uri,
-      };
-      try {
-        res = await CaptioningAPI.url(JSON.stringify(req), '');
-      } catch (e) {
-        console.log(e);
+    try {
+      if (params.type === 'file') {
+        const req = {
+          image: params.value,
+        };
+        res = await CaptioningAPI.image(req);
+      } else {
+        const req = {
+          image_url: params.value,
+        };
+        res = await CaptioningAPI.url(req);
       }
-    } else {
-      const fileType = uri.split('.').pop();
-      const form = new FormData();
-      form.append('image', {
-        uri: uri,
-        type: `image/${fileType}`,
-        name: `image.${fileType}`,
-      });
-
-      try {
-        res = await CaptioningAPI.image(form, '');
-      } catch (e) {
-        console.log(e);
-      }
+    } catch (e) {
+      console.log(e);
+      Alert.alert('Error', 'Captioning failed');
     }
-    const resData = res?.data;
-    if (!resData) {
-      return;
-    }
-    Alert.alert('Caption', resData.caption);
+    Alert.alert('Success captioning', res.caption, [
+      {
+        text: 'OK',
+      },
+    ]);
   };
 
   return (

@@ -3,7 +3,6 @@ import Config from 'react-native-config';
 
 import {getToken} from '../Utils/user';
 
-// const baseURL = Config.BACKEND_URL;
 const configuredAxios = axios.create({
   baseURL: Config.BACKEND_URL,
 });

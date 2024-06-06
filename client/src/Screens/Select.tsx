@@ -1,7 +1,10 @@
 import * as React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, Alert} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {
+  launchImageLibrary,
+  ImageLibraryOptions,
+} from 'react-native-image-picker';
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
 import Button from '../Components/Button';
@@ -30,8 +33,9 @@ const styles = StyleSheet.create({
 export function Select({navigation, route}: Props) {
   const params = route.params;
   const handleChoosePhoto = async () => {
-    const options: any = {
+    const options: ImageLibraryOptions = {
       mediaType: 'photo',
+      includeBase64: true,
     };
     const image = await launchImageLibrary(options);
     if (image.didCancel || image.errorCode || image.errorMessage) {
@@ -41,12 +45,19 @@ export function Select({navigation, route}: Props) {
       return;
     }
     const imageObject = image.assets[0];
-    if (!imageObject.uri || !imageObject.width || !imageObject.height) {
+    if (
+      !imageObject.uri ||
+      !imageObject.width ||
+      !imageObject.height ||
+      !imageObject.base64
+    ) {
+      Alert.alert('Lỗi', 'Lỗi chọn file');
       return;
     }
+    const value = `data:${imageObject.type};base64,${imageObject.base64}`;
     navigation.navigate(params.to, {
       type: 'file',
-      value: imageObject.uri,
+      value: value,
       size: {width: imageObject.width, height: imageObject.height},
     });
   };

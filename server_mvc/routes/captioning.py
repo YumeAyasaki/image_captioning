@@ -1,13 +1,11 @@
-from flask import Blueprint, g, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response
 import datetime
 
-from controllers.image import ImageController
-from dto.image import Image, ImageCreate, ImageUpdate
 from utils.translate import translate_sentence
 from controllers.captioning import CaptioningController
 
 caption_blueprint = Blueprint("caption", __name__, url_prefix="/caption")
-# model = CaptioningController()
+model = CaptioningController()
 
 @caption_blueprint.route('/url/', methods=['POST'])
 def generate_caption_url():
@@ -44,7 +42,8 @@ def upload_file():
 @caption_blueprint.route('/image/', methods=['POST'])
 def generate_caption_image():
     # Get the image from the request
-    image = request.files.get('image')
+    data = request.get_json()
+    image = data['image'].split(",")[1]
     # Get current time stamp
     time = datetime.datetime.now()
     # Generate the caption

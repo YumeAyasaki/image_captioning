@@ -1,11 +1,16 @@
 import {post} from './generic';
 
+type CaptionResponse = {
+  caption: string;
+  time_to_generate: number;
+};
+
 const CaptioningAPI = {
-  url: function (data: string) {
-    return post('/api/caption/url/', data);
+  url: function (data: any) {
+    return post<CaptionResponse>('/api/caption/url/', data);
   },
   image: function (data: any) {
-    return post('/api/caption/image/', data);
+    return post<CaptionResponse>('/api/caption/image/', data);
   },
 };
 
