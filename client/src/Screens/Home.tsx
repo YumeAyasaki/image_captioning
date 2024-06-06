@@ -43,7 +43,7 @@ export function Home({navigation}: Props) {
     removeToken();
     const token = await getToken();
     if (token !== null) {
-      await UserAPI.logout(token);
+      await UserAPI.logout();
     }
     navigation.replace('Home');
     return;

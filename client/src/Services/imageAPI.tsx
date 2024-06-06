@@ -1,20 +1,30 @@
+import {TImage} from '../Constants/Type';
 import {get, post, delele, put} from './generic'; // Can't use delete as it is a reserved keyword in JS
 
+type GetAllType = {
+  images: TImage[];
+};
+
+type GetOne = {
+  image: TImage;
+};
+
 const ImageAPI = {
-  getAll: function (token: string = '') {
-    return get('/api/image/', token);
+  getAll: function () {
+    return get<GetAllType>('/api/image/');
   },
-  getOne: function (id: string, token: string = '') {
-    return get(`/api/image/${id}/`, token);
+  getOne: function (id: string) {
+    return get<GetOne>(`/api/image/${id}/`);
   },
-  add: function (data: any, token: string) {
-    return post('/api/image/add/', data, token);
+  // From this to below is message only, so string type as return.
+  add: function (data: any) {
+    return post<string>('/api/image/add/', data);
   },
-  delete: function (id: string, token: string) {
-    return delele(`/api/image/delete/${id}/`, token);
+  delete: function (id: string) {
+    return delele<string>(`/api/image/delete/${id}/`);
   },
-  edit: function (data: any, id: string, token: string) {
-    return put(`/api/image/${id}/`, data, token);
+  edit: function (data: any, id: string) {
+    return put<string>(`/api/image/${id}/`, data);
   },
 };
 

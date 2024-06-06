@@ -18,7 +18,7 @@ import FloatingContainer from '../Components/Floating/Container';
 import {RootStackParamList} from '../Constants/ScreenTypes';
 import ImageAPI from '../Services/imageAPI';
 import {TextStl, theme, InputStl} from '../Constants/Style';
-import {getToken} from '../Utils/user';
+import {TImage} from '../Constants/Type';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Image'>;
 
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
 export function ImageS({navigation, route}: Props) {
   const params = route.params;
   const [uri, setUri] = useState('');
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState<TImage>();
 
   const [annotations, setAnnotations] = useState<Array<String>>([]);
   const changeValue = (index: number, text: string) => {
@@ -91,7 +91,7 @@ export function ImageS({navigation, route}: Props) {
     const getImage = async () => {
       try {
         res = await ImageAPI.getOne(params.id);
-        setImage(res.data.image);
+        setImage(res.image);
       } catch (e) {
         console.log(e);
       }
@@ -100,7 +100,7 @@ export function ImageS({navigation, route}: Props) {
   }, []);
 
   useEffect(() => {
-    if (image === null) {
+    if (!image) {
       return;
     }
     const value = image.image_file === '' ? image.url : image.image_file;
@@ -110,22 +110,16 @@ export function ImageS({navigation, route}: Props) {
   }, [image]);
 
   const sendUpdate = async () => {
-    const token = await getToken();
-    var res = null;
     var req = {
       image_file: image.image_file,
       url: image.url,
       annotation: annotations,
     };
     try {
-      res = await ImageAPI.edit(req, params.id, token);
+      await ImageAPI.edit(req, params.id);
     } catch (e) {
       console.log(e);
       Alert.alert('Error', 'Edit failed');
-    }
-    const resData = res?.data;
-    if (!resData) {
-      return;
     }
     Alert.alert('Success', 'Edited', [
       {
@@ -139,17 +133,11 @@ export function ImageS({navigation, route}: Props) {
 
   const sendDelete = async () => {
     const deleteMethod = async () => {
-      const token = await getToken();
-      var res = null;
       try {
-        res = await ImageAPI.delete(params.id, token);
+        await ImageAPI.delete(params.id);
       } catch (e) {
         console.log(e);
         Alert.alert('Error', 'Delete failed');
-      }
-      const resData = res?.data;
-      if (!resData) {
-        return;
       }
       Alert.alert('Success', 'Deleted', [
         {

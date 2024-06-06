@@ -1,11 +1,11 @@
-import {post, postForm} from './generic';
+import {post} from './generic';
 
 const CaptioningAPI = {
-  url: function (data: string, token: string) {
-    return post('/api/caption/url/', data, token);
+  url: function (data: string) {
+    return post('/api/caption/url/', data);
   },
-  image: function (data: any, token: string) {
-    return postForm('/api/caption/image/', data, token);
+  image: function (data: any) {
+    return post('/api/caption/image/', data);
   },
 };
 

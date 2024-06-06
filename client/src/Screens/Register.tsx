@@ -36,9 +36,8 @@ export function Register({navigation}: Props) {
   };
 
   const handleRegister = async () => {
-    let res = null;
     try {
-      res = await UserAPI.register(formData);
+      await UserAPI.register(formData);
     } catch (err) {
       console.log(err);
       if (typeof err === 'string') {

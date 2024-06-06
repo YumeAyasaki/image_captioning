@@ -39,6 +39,7 @@ export function Login({navigation}: Props) {
     let res = null;
     try {
       res = await UserAPI.login(formData);
+      console.log(res);
     } catch (err) {
       console.log(err);
       if (typeof err === 'string') {
@@ -51,8 +52,8 @@ export function Login({navigation}: Props) {
     }
 
     try {
-      await AsyncStorage.setItem('token', res.data.token);
-      await AsyncStorage.setItem('user', JSON.stringify(res.data.user));
+      await AsyncStorage.setItem('token', res.token);
+      await AsyncStorage.setItem('user', JSON.stringify(res.user));
 
       const user = await getUser();
 

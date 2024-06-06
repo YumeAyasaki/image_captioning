@@ -14,10 +14,10 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../Constants/ScreenTypes';
 import {TextStl} from '../Constants/Style';
 import ImageAPI from '../Services/imageAPI';
-import {getToken} from '../Utils/user';
 import FloatingButton from '../Components/Floating/Button';
 import FloatingContainer from '../Components/Floating/Container';
 import UploadMethodModal from '../Components/UploadMethod';
+import {TImage} from '../Constants/Type';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Database'>;
 
@@ -58,16 +58,14 @@ const styles = StyleSheet.create({
 });
 
 export function Database({navigation}: Props) {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<TImage[]>([]);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   useEffect(() => {
     const fetchData = async () => {
-      const token = await getToken();
-      const res = await ImageAPI.getAll(token);
-      setData(res.data.images);
+      const res = await ImageAPI.getAll();
+      setData(res.images);
     };
     fetchData();
-    console.log(data);
   }, []);
 
   const imageComponent = (image: ComponentProps) => {

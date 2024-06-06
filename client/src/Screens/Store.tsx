@@ -19,7 +19,6 @@ import FloatingButton from '../Components/Floating/Button';
 import {RootStackParamList} from '../Constants/ScreenTypes';
 import {InputStl, TextStl, theme} from '../Constants/Style';
 import ImageAPI from '../Services/imageAPI';
-import {getToken} from '../Utils/user';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Store'>;
 
@@ -99,8 +98,6 @@ export function StoreScreen({navigation, route}: Props) {
   }, [params, pictureHeight]);
 
   const handleSend = async () => {
-    const token = await getToken();
-    var res = null;
     var req = {
       image_file: '',
       url: '',
@@ -112,14 +109,10 @@ export function StoreScreen({navigation, route}: Props) {
       req.url = params.value;
     }
     try {
-      res = await ImageAPI.add(req, token);
+      await ImageAPI.add(req);
     } catch (e) {
       console.log(e);
       Alert.alert('Error', 'Upload failed');
-    }
-    const resData = res?.data;
-    if (!resData) {
-      return;
     }
     Alert.alert('Success', 'Uploaded', [
       {
