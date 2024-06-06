@@ -13,18 +13,9 @@ import Register from "./Register";
 import PrivateRoute, {Isauth} from './PrivateRoute'
 import Captioning from "./Captioning";
 import ImageUploader from "./ImageUploader";
+import ImageViewer from "./ImageViewer";
 
 import "./App.css";
-//import {Routes as sexRoutes} from "./Routes_T";
-//import AuthProvider from "./AuthProvider_T";
-//    <AuthProvider>
-//    <sexRoutes/>
-//</AuthProvider>
-
-//const UserContext = createContext({
-//    user: "",
-//    setUser: () => {}
-//  });
 
 const UserContext = createContext();
 export {UserContext};
@@ -35,20 +26,18 @@ export default function App() {
             <BrowserRouter>
             <Routes>
                 <Route path="/" element={
-                    <PrivateRoute>
-                <Layout />
-                </PrivateRoute>
-                }>
-                <Route index element={<Home />} />
-                <Route path="blogs" element={<Blogs />} />
-                <Route path="contact" element={<Contact />} />
-                <Route path="*" element={<NoPage />} />
-                </Route>
-                <Route path="/login" element={<Login/>} />
+                    <Layout/>
+                }></Route>
                 <Route path="/register" element={<Register/>} />
+                <Route path="/login" element={<Login/>} />
                 <Route path='/captioning' element={
                     <PrivateRoute>
                     <Captioning/>
+                    </PrivateRoute>
+                } />
+                <Route path='/ImageViewer' element={
+                    <PrivateRoute>
+                    <ImageViewer/>
                     </PrivateRoute>
                 } />
                 <Route path='/ImageUploader' element={
@@ -57,7 +46,6 @@ export default function App() {
                     </PrivateRoute>
                 } />
 
-                //<Route path="/captioning" element={<Captioning/>} />
             </Routes>
             </BrowserRouter>
         </UserContext.Provider>
