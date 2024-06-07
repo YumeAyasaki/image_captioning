@@ -5,8 +5,6 @@ import {
   HomeScreen,
   LoginScreen,
   RegisterScreen,
-  CameraScreen,
-  SelectScreen,
   CaptioningScreen,
   UrlScreen,
   DatabaseScreen,
@@ -29,8 +27,6 @@ export default function Screen() {
         component={RegisterScreen}
         options={options}
       />
-      <Stack.Screen name="Camera" component={CameraScreen} options={options} />
-      <Stack.Screen name="Select" component={SelectScreen} options={options} />
       <Stack.Screen
         name="Captioning"
         component={CaptioningScreen}

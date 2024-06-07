@@ -45,7 +45,7 @@ export function Url({navigation, route}: Props) {
           imageSize = {width, height};
         },
         error => {
-          Alert.alert('Error', 'Link ảnh không hợp lệ!');
+          Alert.alert('Lỗi', 'Link ảnh không hợp lệ!');
           console.log(error);
         },
       );

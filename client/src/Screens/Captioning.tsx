@@ -7,6 +7,7 @@ import {RootStackParamList} from '../Constants/ScreenTypes';
 import CaptioningAPI from '../Services/captionAPI';
 import Button from '../Components/Button';
 import {TextStl} from '../Constants/Style';
+import {handleError} from '../Utils/error';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Captioning'>;
 
@@ -71,14 +72,28 @@ export function CaptioningScreen({navigation, route}: Props) {
         res = await CaptioningAPI.url(req);
       }
     } catch (e) {
-      console.log(e);
-      Alert.alert('Error', 'Captioning failed');
+      handleError(e);
+      return;
     }
-    Alert.alert('Success captioning', res.caption, [
-      {
-        text: 'OK',
-      },
-    ]);
+    Alert.alert(
+      'Chú thích thành công',
+      `${res.caption}. Dịch: ${res.translated_caption}`,
+      [
+        {
+          text: 'OK',
+        },
+        {
+          text: 'Lưu nhanh vào database',
+          onPress: () =>
+            navigation.navigate('Store', {
+              type: params.type,
+              value: params.value,
+              size: params.size,
+              initedValue: [res.caption, res.translated_caption],
+            }),
+        },
+      ],
+    );
   };
 
   return (

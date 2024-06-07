@@ -22,7 +22,7 @@ class UserController(Controller[UserModel]):
             return user_dao.create(new_user)
         
         except Exception as e:
-            raise ValueError(f"Register failed: {e}")
+            raise ValueError(f"Đăng ký thất bại: {e}")
         
     def login(self, user: UserLogin):
         session = self.session
@@ -31,9 +31,9 @@ class UserController(Controller[UserModel]):
             db_user = user_dao.get_one_by_username(user.username)
             
             if not db_user:
-                raise ValueError("Invalid username")
+                raise ValueError("Tài khoản không hợp lệ.")
             if not user_dao.check_password(user.username, user.password):
-                raise ValueError("Invalid password")
+                raise ValueError("Mật khẩu không hợp lệ.")
             
             secret = os.environ.get('secret')
             token = jwt.encode({
@@ -43,7 +43,7 @@ class UserController(Controller[UserModel]):
             return db_user, token
 
         except Exception as e:
-            raise ValueError(f"Login failed: {e}")
+            raise ValueError(f"Đăng nhập thất bại: {e}")
         
     def get_user_from_token(self, token: str):
         session = self.session
@@ -55,4 +55,4 @@ class UserController(Controller[UserModel]):
             return db_user
         
         except Exception as e:
-            raise ValueError(f"Retrieve user failed: {e}")
+            raise ValueError(f"Truy xuất người dùng thất bại: {e}")

@@ -4,7 +4,7 @@ from .base import BaseDto
 
 class User(BaseDto):
     id: str
-    username: str = Field(..., min_length=3, max_length=50)
+    username: str = Field(...)
     password: str = Field(...)
     email: EmailStr = Field(...)
 
@@ -14,5 +14,5 @@ class UserCreate(BaseModel):
     email: EmailStr = Field(...)
     
 class UserLogin(BaseModel):
-    username: str = Field(..., min_length=3, max_length=50)
-    password: str = Field(..., min_length=8)
+    username: str = Field(...)
+    password: str = Field(...)

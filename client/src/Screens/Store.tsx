@@ -19,6 +19,7 @@ import FloatingButton from '../Components/Floating/Button';
 import {RootStackParamList} from '../Constants/ScreenTypes';
 import {InputStl, TextStl, theme} from '../Constants/Style';
 import ImageAPI from '../Services/imageAPI';
+import {handleError} from '../Utils/error';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Store'>;
 
@@ -64,7 +65,9 @@ export function StoreScreen({navigation, route}: Props) {
   const params = route.params;
   const [pictureHeight, setPictureHeight] = useState(300);
   const [uri, setUri] = useState('');
-  const [annotations, setAnnotations] = useState<Array<String>>(['']);
+  const [annotations, setAnnotations] = useState<Array<String>>(
+    params.initedValue ? params.initedValue : [],
+  );
 
   const changeValue = (index: number, text: string) => {
     var annotation = annotations;
@@ -112,9 +115,9 @@ export function StoreScreen({navigation, route}: Props) {
       await ImageAPI.add(req);
     } catch (e) {
       console.log(e);
-      Alert.alert('Error', 'Upload failed');
+      handleError(e);
     }
-    Alert.alert('Success', 'Uploaded', [
+    Alert.alert('Thành công', 'Tải ảnh lên thành công', [
       {
         text: 'OK',
         onPress: () => {

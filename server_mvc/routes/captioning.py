@@ -16,9 +16,10 @@ def generate_caption_url():
     time = datetime.datetime.now()
     # Generate the caption
     caption = model.generate_caption_from_url(image_url)
+    translated_caption = translate_sentence(caption)
     time_to_generate = datetime.datetime.now() - time
     # Return the caption as JSON
-    return jsonify({'caption': caption, 'time_to_generate': time_to_generate.total_seconds()})
+    return jsonify({'caption': caption, 'translated_caption': translated_caption, 'time_to_generate': time_to_generate.total_seconds()})
 
 @caption_blueprint.route('/upload', methods=['POST', 'GET'])
 def upload_file():
@@ -49,6 +50,7 @@ def generate_caption_image():
     # Generate the caption
     # model = g.model
     caption = model.generate_caption(image)
+    translated_caption = translate_sentence(caption)
     time_to_generate = datetime.datetime.now() - time
     # Return the caption as JSON
-    return jsonify({'caption': caption, 'time_to_generate': time_to_generate.total_seconds()})
+    return jsonify({'caption': caption, 'translated_caption': translated_caption, 'time_to_generate': time_to_generate.total_seconds()})

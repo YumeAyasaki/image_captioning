@@ -3,6 +3,12 @@ import {View, Text} from 'react-native';
 import BlackBackgroundModal from './UploadModal';
 
 import Button from './Button';
+import {
+  handleCaptureImage,
+  handleChoosePhoto,
+  requestCameraPermission,
+} from '../Utils/navBarFunction';
+import {displayError} from '../Utils/error';
 
 type Props = {
   navigation: any;
@@ -12,22 +18,23 @@ type Props = {
 
 const UploadMethodModal = ({navigation, to, onClose}: Props) => {
   const onPressUrl = () => {
+    onClose();
     navigation.navigate('Url', {
       to: to,
     });
-    onClose();
   };
-  const onPressSelect = () => {
-    navigation.navigate('Select', {
-      to: to,
-    });
+  const onPressSelect = async () => {
     onClose();
+    await handleChoosePhoto(navigation, to);
   };
-  const onPressCamera = () => {
-    navigation.navigate('Camera', {
-      to: to,
-    });
+  const onPressCamera = async () => {
     onClose();
+    const permission = await requestCameraPermission();
+    if (permission) {
+      await handleCaptureImage(navigation, to);
+    } else {
+      displayError('Lỗi', 'Vui lòng cấp quyền truy cập camera cho ứng dụng.');
+    }
   };
   return (
     <BlackBackgroundModal onClose={onClose}>

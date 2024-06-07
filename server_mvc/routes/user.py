@@ -1,4 +1,5 @@
 from flask import Blueprint, g, request, jsonify
+from pydantic import ValidationError
 
 from controllers.user import UserController
 from dto.user import UserCreate, UserLogin
@@ -18,9 +19,17 @@ def register():
         data.pop('rePassword', None)
         user_data = UserCreate(**data)
         user_controller.create_user(user_data)
-        return jsonify({'msg': 'Người dùng đã được tạo thành công.'}), 201
+        return jsonify({'message': 'Người dùng đã được tạo thành công.'}), 201
+    except ValidationError as e:
+        error_messages = []
+        for error in e.errors():
+            field = error['loc'][0] if error['loc'] else 'general'
+            message = error['msg']
+            error_messages.append(f"{field}: {message}")
+
+        return jsonify({'message': '\n'.join(error_messages)}), 400
     except ValueError as e:
-        return jsonify({'error': str(e)}), 400
+        return jsonify({'message': str(e)}), 400
     
 @user_blueprint.route('/login/', methods=['POST'])
 def login():
@@ -31,9 +40,9 @@ def login():
         data = request.get_json()
         user_data = UserLogin(**data)
         user, token = user_controller.login(user_data)
-        return jsonify({'msg': 'Đăng nhập thành công.', 'token': token, 'user': user.model_dump(mode='json')}), 201
+        return jsonify({'message': 'Đăng nhập thành công.', 'token': token, 'user': user.model_dump(mode='json')}), 201
     except ValueError as e:
-        return jsonify({'error': str(e)}), 400
+        return jsonify({'message': str(e)}), 400
     
 @user_blueprint.route('/', methods=['GET'])
 @token_required

@@ -59,30 +59,32 @@ const NavBar = ({navigation}: Props) => {
           style={styles.randomPadding}>
           <Icons name="image" size={30} color="white" />
         </Pressable>
-        {/* Upload */}
-        <Pressable
-          onPress={() => setOnStore(true)}
-          style={styles.randomPadding}>
-          <Icons name="cloud-upload" size={30} color="white" />
-        </Pressable>
-        {/* Database */}
-        <Pressable
-          onPress={() => navigation.navigate('Database')}
-          style={styles.randomPadding}>
-          <Icons name="server" size={30} color="white" />
-        </Pressable>
+        {user != null && (
+          <Pressable
+            onPress={() => setOnStore(true)}
+            style={styles.randomPadding}>
+            <Icons name="cloud-upload" size={30} color="white" />
+          </Pressable>
+        )}
+        {user != null && (
+          <Pressable
+            onPress={() => navigation.navigate('Database')}
+            style={styles.randomPadding}>
+            <Icons name="server" size={30} color="white" />
+          </Pressable>
+        )}
       </View>
       {user == null && (
         <View style={styles.navBarComponent}>
           <Pressable
             style={styles.randomPadding}
             onPress={() => navigation.navigate('Login')}>
-            <Text style={styles.text}>Login</Text>
+            <Text style={styles.text}>Đăng nhập</Text>
           </Pressable>
           <Pressable
             style={styles.randomPadding}
-            onPress={() => navigation.navigate('Login')}>
-            <Text style={styles.text}>Register</Text>
+            onPress={() => navigation.navigate('Register')}>
+            <Text style={styles.text}>Đăng ký</Text>
           </Pressable>
         </View>
       )}

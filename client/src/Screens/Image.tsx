@@ -19,6 +19,7 @@ import {RootStackParamList} from '../Constants/ScreenTypes';
 import ImageAPI from '../Services/imageAPI';
 import {TextStl, theme, InputStl} from '../Constants/Style';
 import {TImage} from '../Constants/Type';
+import {handleError} from '../Utils/error';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Image'>;
 
@@ -110,6 +111,9 @@ export function ImageS({navigation, route}: Props) {
   }, [image]);
 
   const sendUpdate = async () => {
+    if (!image) {
+      return;
+    }
     var req = {
       image_file: image.image_file,
       url: image.url,
@@ -119,9 +123,9 @@ export function ImageS({navigation, route}: Props) {
       await ImageAPI.edit(req, params.id);
     } catch (e) {
       console.log(e);
-      Alert.alert('Error', 'Edit failed');
+      handleError(e);
     }
-    Alert.alert('Success', 'Edited', [
+    Alert.alert('Thành công', 'Chỉnh sửa thành công', [
       {
         text: 'OK',
         onPress: () => {
@@ -137,9 +141,9 @@ export function ImageS({navigation, route}: Props) {
         await ImageAPI.delete(params.id);
       } catch (e) {
         console.log(e);
-        Alert.alert('Error', 'Delete failed');
+        handleError(e);
       }
-      Alert.alert('Success', 'Deleted', [
+      Alert.alert('Thành công', 'Xoá thành công', [
         {
           text: 'OK',
           onPress: () => {
@@ -148,15 +152,15 @@ export function ImageS({navigation, route}: Props) {
         },
       ]);
     };
-    Alert.alert('Delete', 'Are you sủe?', [
+    Alert.alert('Xoá?', 'Bạn chắc chứ?', [
       {
-        text: 'Sủe',
+        text: '100%',
         onPress: async () => {
           await deleteMethod();
         },
       },
       {
-        text: 'Nai',
+        text: 'Từ từ, chờ tí...',
         onPress: () => {
           return;
         },

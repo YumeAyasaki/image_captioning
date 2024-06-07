@@ -1,5 +1,3 @@
-// Considering using this to pass user/token to screen that requires authentication
-
 export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
@@ -22,6 +20,7 @@ export type RootStackParamList = {
     type: 'file' | 'url';
     value: string;
     size: {width: number; height: number};
+    initedValue?: string[];
   };
   Database: undefined;
   Image: {

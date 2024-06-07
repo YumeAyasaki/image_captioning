@@ -2,6 +2,7 @@ import {post} from './generic';
 
 type CaptionResponse = {
   caption: string;
+  translated_caption: string;
   time_to_generate: number;
 };
 
