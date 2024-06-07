@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 import {UserContext} from "./index.js";
 import { useContext } from "react";
 
+function blobToBase64(blob) {
+  return new Promise((resolve, _) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.readAsDataURL(blob);
+  });
+}
+
 function ImageUploader() {
     const {user, setUser} = useContext(UserContext);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -28,10 +36,14 @@ function ImageUploader() {
       //const formData = new FormData();
       //formData.append('image', selectedImage);
       //formData.append('additionalInfo', additionalInfo);
-
+      var reader = new FileReader();
+      //reader.readAsDataURL(selectedImage); //URL.createObjectURL (selectedImage)
+      //reader.onloadend = function() {
+        var base64data = await (blobToBase64(selectedImage))
+      //url: URL.createObjectURL (selectedImage)
       const dataToSend = {
         image: selectedImage,
-        url: URL.createObjectURL (selectedImage),
+        url: base64data,
         title: 'testImage',
         annotation: additionalInfo
         //additionalInfo: additionalInfo,
