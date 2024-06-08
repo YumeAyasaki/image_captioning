@@ -1,14 +1,21 @@
+import {TUser} from '../Constants/Type';
 import {get, post} from './generic';
+
+type LoginResponse = {
+  token: string;
+  user: TUser;
+  message: string;
+};
 
 const UserAPI = {
   login: function (data: any) {
-    return post('/api/user/login/', data, '');
+    return post<LoginResponse>('/api/user/login/', data);
   },
   register: function (data: any) {
-    return post('/api/user/register/', data, '');
+    return post<string>('/api/user/register/', data);
   },
-  logout: function (token: string) {
-    return get('/api/user/logout/', token);
+  logout: function () {
+    return get<string>('/api/user/logout/');
   },
 };
 

@@ -6,6 +6,7 @@ import {RootStackParamList} from '../Constants/ScreenTypes';
 import {TextStl, InputStl, theme} from '../Constants/Style';
 import Button from '../Components/Button';
 import UserAPI from '../Services/userAPI';
+import {handleError} from '../Utils/error';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
@@ -36,17 +37,10 @@ export function Register({navigation}: Props) {
   };
 
   const handleRegister = async () => {
-    let res = null;
     try {
-      res = await UserAPI.register(formData);
+      await UserAPI.register(formData);
     } catch (err) {
-      console.log(err);
-      if (typeof err === 'string') {
-        Alert.alert('Đăng ký thất bại', err);
-      } else {
-        Alert.alert('Đăng ký thất bại');
-      }
-      console.log(err);
+      handleError(err);
       return;
     }
     Alert.alert('Đăng ký thành công', 'Vui lòng đăng nhập để tiếp tục', [

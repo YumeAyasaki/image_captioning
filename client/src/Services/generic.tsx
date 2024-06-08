@@ -1,138 +1,56 @@
-import axios from 'axios';
+import axios, {AxiosError} from 'axios';
 import Config from 'react-native-config';
 
-const baseURL = Config.BACKEND_URL;
-// const baseURL = 'https://0ee8-113-23-110-241.ngrok-free.app';
+import {getToken} from '../Utils/user';
 
-export const configToken = function (token: string) {
-  return {
-    headers: {
+const configuredAxios = axios.create({
+  baseURL: Config.BACKEND_URL,
+});
+
+configuredAxios.interceptors.request.use(
+  async (config: any) => {
+    const token = await getToken();
+    config.headers = {
       Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
       'Content-Type': 'application/json',
-    },
-  };
-};
+    };
+    return config;
+  },
+  (error: AxiosError) => Promise.reject(error),
+);
 
-export const configFormData = function (token: string) {
-  return {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'multipart/form-data',
-    },
-  };
-};
+export async function get<T>(url: string): Promise<T> {
+  console.log(url);
 
-export const get = function (url: string, token: string) {
-  console.log(baseURL + url);
-  return new Promise((resolve, reject) =>
-    axios
-      .get(baseURL + url, configToken(token))
-      .then(res => {
-        // return data
-        return resolve({data: res.data});
-      })
-      .catch(err => {
-        // return err message
-        if (!err.response) {
-          return reject(err.message);
-        }
-        return reject(err.response.data.message);
-      }),
-  );
-};
+  const response = await configuredAxios.get(url);
+  return response.data as T;
+}
 
-export const post = function (url: string, data: any, token: string) {
-  console.log(baseURL + url);
-  return new Promise((resolve, reject) =>
-    axios
-      .post(baseURL + url, data, configToken(token))
-      .then(res => {
-        // return data
-        return resolve({data: res.data});
-      })
-      .catch(err => {
-        // return err message
-        if (!err.response) {
-          return reject(err.message);
-        }
-        return reject(err.response.data.message);
-      }),
-  );
-};
+export async function post<T>(url: string, data: any): Promise<T> {
+  console.log(url);
 
-export const postForm = function (url: string, data: any, token: string) {
-  console.log(baseURL + url);
-  return new Promise((resolve, reject) =>
-    axios
-      .post(baseURL + url, data, configFormData(token))
-      .then(res => {
-        // return data
-        return resolve({data: res.data});
-      })
-      .catch(err => {
-        // return err message
-        console.log(err);
-        if (!err.response) {
-          return reject(err.message);
-        }
-        return reject(err.response.data.message);
-      }),
-  );
-};
+  const response = await configuredAxios.post(url, data);
+  return response.data as T;
+}
 
-export const put = function (url: string, data: any, token: string) {
-  console.log(baseURL + url);
-  return new Promise((resolve, reject) =>
-    axios
-      .put(baseURL + url, data, configToken(token))
-      .then(res => {
-        // return data
-        return resolve({data: res.data});
-      })
-      .catch(err => {
-        // return err message
-        if (!err.response) {
-          return reject(err.message);
-        }
-        return reject(err.response.data.message);
-      }),
-  );
-};
+export async function put<T>(url: string, data: any): Promise<T> {
+  console.log(url);
 
-export const patch = function (url: string, data: any, token: string) {
-  console.log(baseURL + url);
-  return new Promise((resolve, reject) =>
-    axios
-      .patch(baseURL + url, data, configToken(token))
-      .then(res => {
-        // return data
-        return resolve({data: res.data});
-      })
-      .catch(err => {
-        // return err message
-        if (!err.response) {
-          return reject(err.message);
-        }
-        return reject(err.response.data.message);
-      }),
-  );
-};
+  const response = await configuredAxios.put(url, data);
+  return response.data as T;
+}
 
-export const delele = function (url: string, token: string) {
-  console.log(baseURL + url);
-  return new Promise((resolve, reject) =>
-    axios
-      .delete(baseURL + url, configToken(token))
-      .then(res => {
-        // return data
-        return resolve({data: res.data});
-      })
-      .catch(err => {
-        // return err message
-        if (!err.response) {
-          return reject(err.message);
-        }
-        return reject(err.response.data.message);
-      }),
-  );
-};
+export async function patch<T>(url: string, data: any): Promise<T> {
+  console.log(url);
+
+  const response = await configuredAxios.patch(url, data);
+  return response.data as T;
+}
+
+export async function delele<T>(url: string): Promise<T> {
+  console.log(url);
+
+  const response = await configuredAxios.delete(url);
+  return response.data as T;
+}

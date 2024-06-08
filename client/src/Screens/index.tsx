@@ -30,11 +30,11 @@ const Screen = ({navigation, children, props}: Props) => {
 import {Home, HomeProps} from './Home';
 import {Login, LoginProps} from './Login';
 import {Register, RegisterProps} from './Register';
-import {CameraScreen as Camera, CameraProps} from './Camera';
-import {Select, SelectProps} from './Select';
-import {ImageScreen as Image, ImageProps} from './Image';
+import {CaptioningScreen as Captioning, CaptioningProps} from './Captioning';
+import {StoreScreen as Store, StoreProps} from './Store';
 import {Url, UrlProps} from './Url';
 import {Database, DatabaseProps} from './Database';
+import {ImageS, ImageProps} from './Image'; // Image is duplicated
 
 export const HomeScreen = (props: HomeProps) => {
   const navigation = props.navigation;
@@ -56,26 +56,18 @@ export const RegisterScreen = (props: RegisterProps) => {
   );
 };
 
-export const CameraScreen = (props: CameraProps) => {
+export const CaptioningScreen = (props: CaptioningProps) => {
   const navigation = props.navigation;
   const otherProps = {...props};
   return (
-    <Screen navigation={navigation} children={Camera} props={otherProps} />
+    <Screen navigation={navigation} children={Captioning} props={otherProps} />
   );
 };
 
-export const SelectScreen = (props: SelectProps) => {
+export const StoreScreen = (props: StoreProps) => {
   const navigation = props.navigation;
   const otherProps = {...props};
-  return (
-    <Screen navigation={navigation} children={Select} props={otherProps} />
-  );
-};
-
-export const ImageScreen = (props: ImageProps) => {
-  const navigation = props.navigation;
-  const otherProps = {...props};
-  return <Screen navigation={navigation} children={Image} props={otherProps} />;
+  return <Screen navigation={navigation} children={Store} props={otherProps} />;
 };
 
 export const UrlScreen = (props: UrlProps) => {
@@ -89,5 +81,13 @@ export const DatabaseScreen = (props: DatabaseProps) => {
   const otherProps = {...props};
   return (
     <Screen navigation={navigation} children={Database} props={otherProps} />
+  );
+};
+
+export const ImageScreen = (props: ImageProps) => {
+  const navigation = props.navigation;
+  const otherProps = {...props};
+  return (
+    <Screen navigation={navigation} children={ImageS} props={otherProps} />
   );
 };

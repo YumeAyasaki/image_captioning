@@ -3,22 +3,23 @@ import {useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
-  Dimensions,
   Alert,
   Text,
   Image,
+  ScrollView,
   TextInput,
-  ViewStyle,
+  Pressable,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import Icons from 'react-native-vector-icons/Ionicons';
+import FloatingButton from '../Components/Floating/Button';
+import FloatingContainer from '../Components/Floating/Container';
 
 import {RootStackParamList} from '../Constants/ScreenTypes';
-import CaptioningAPI from '../Services/captionAPI';
-import Button from '../Components/Button';
-import {InputStl, TextStl, theme} from '../Constants/Style';
-import BlackBackgroundModal from '../Components/UploadModal';
 import ImageAPI from '../Services/imageAPI';
-import {getToken} from '../Utils/user';
+import {TextStl, theme, InputStl} from '../Constants/Style';
+import {TImage} from '../Constants/Type';
+import {handleError} from '../Utils/error';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Image'>;
 
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
   },
   previewImage: {
     width: '100%',
+    height: 300,
   },
   button: {
     marginHorizontal: 10,
@@ -49,87 +51,118 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
   },
   sameRow: {
+    display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
+    paddingRight: 10,
+  },
+  textBoxInRow: {
+    flexGrow: 1,
   },
 });
 
-export function ImageScreen({navigation, route}: Props) {
-  console.log(navigation);
+export function ImageS({navigation, route}: Props) {
   const params = route.params;
-  const [pictureHeight, setPictureHeight] = useState(300);
   const [uri, setUri] = useState('');
-  const [isUploading, setIsUploading] = useState(false);
-  var formData = {
-    title: '',
-    annotation: '',
+  const [image, setImage] = useState<TImage>();
+
+  const [annotations, setAnnotations] = useState<Array<String>>([]);
+  const changeValue = (index: number, text: string) => {
+    var annotation = annotations;
+    annotation[index] = text;
+    setAnnotations(annotation);
   };
+
+  const addAnnotation = () => {
+    setAnnotations(() => [...annotations, '']);
+  };
+
+  const removeAnnotation = (index: number) => {
+    setAnnotations(annotations => {
+      if (index < 0 || index >= annotations.length) {
+        // Throw an error if the index is out of bounds
+        throw new Error('Index out of range');
+      }
+      return annotations.slice(0, index).concat(annotations.slice(index + 1));
+    });
+  };
+
   useEffect(() => {
-    // uri/url
-    setUri(params.value);
-    // height
-    const newHeight = Math.min(
-      Dimensions.get('window').height * 0.65,
-      params.size.height,
-    );
-    setPictureHeight(newHeight);
-  }, [params, pictureHeight]);
-
-  const handleSend = async () => {
-    let res = null;
-    if (params.type === 'url') {
-      // JSON object with params image_url
-      const req = {
-        image_url: uri,
-      };
+    var res = null;
+    const getImage = async () => {
       try {
-        res = await CaptioningAPI.url(JSON.stringify(req), '');
+        res = await ImageAPI.getOne(params.id);
+        setImage(res.image);
       } catch (e) {
         console.log(e);
       }
-    } else {
-      const fileType = uri.split('.').pop();
-      const form = new FormData();
-      form.append('image', {
-        uri: uri,
-        type: `image/${fileType}`,
-        name: `image.${fileType}`,
-      });
+    };
+    getImage();
+  }, []);
 
-      try {
-        res = await CaptioningAPI.image(form, '');
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    const resData = res?.data;
-    if (!resData) {
+  useEffect(() => {
+    if (!image) {
       return;
     }
-    Alert.alert('Caption', resData.caption);
-  };
+    const value = image.image_file === '' ? image.url : image.image_file;
+    // uri/url
+    setUri(value);
+    setAnnotations(image.annotation);
+  }, [image]);
 
-  const handleUpload = async () => {
-    let res = null;
-    const token = await getToken();
-    const req = {
-      ...formData,
-      url: uri,
+  const sendUpdate = async () => {
+    if (!image) {
+      return;
+    }
+    var req = {
+      image_file: image.image_file,
+      url: image.url,
+      annotation: annotations,
     };
     try {
-      res = await ImageAPI.add(req, token);
+      await ImageAPI.edit(req, params.id);
     } catch (e) {
       console.log(e);
-      Alert.alert('Error', 'Upload failed');
+      handleError(e);
     }
-    const resData = res?.data;
-    if (!resData) {
-      return;
-    }
-    Alert.alert('Success', 'Uploaded', [
+    Alert.alert('Thành công', 'Chỉnh sửa thành công', [
       {
         text: 'OK',
         onPress: () => {
-          setIsUploading(false);
+          navigation.replace('Database');
+        },
+      },
+    ]);
+  };
+
+  const sendDelete = async () => {
+    const deleteMethod = async () => {
+      try {
+        await ImageAPI.delete(params.id);
+      } catch (e) {
+        console.log(e);
+        handleError(e);
+      }
+      Alert.alert('Thành công', 'Xoá thành công', [
+        {
+          text: 'OK',
+          onPress: () => {
+            navigation.replace('Database');
+          },
+        },
+      ]);
+    };
+    Alert.alert('Xoá?', 'Bạn chắc chứ?', [
+      {
+        text: '100%',
+        onPress: async () => {
+          await deleteMethod();
+        },
+      },
+      {
+        text: 'Từ từ, chờ tí...',
+        onPress: () => {
+          return;
         },
       },
     ]);
@@ -137,62 +170,52 @@ export function ImageScreen({navigation, route}: Props) {
 
   return (
     <View style={styles.container}>
-      {isUploading && (
-        <BlackBackgroundModal>
-          <TextInput
-            style={[InputStl.container, TextStl.base]}
-            placeholderTextColor={theme.darkGrey}
-            placeholder="Tiêu đề"
-            onChangeText={text => {
-              formData.title = text;
-            }}
-          />
-          <TextInput
-            style={[InputStl.container, TextStl.base]}
-            placeholderTextColor={theme.darkGrey}
-            placeholder="Nội dung"
-            onChangeText={text => {
-              formData.annotation = text;
-            }}
-          />
-          <View style={styles.sameRow}>
-            <Button
-              style={[styles.container, styles.modalButton] as ViewStyle}
-              text="Xác nhận"
-              onPress={() => handleUpload()}
-            />
-            <Button
-              style={[styles.container, styles.modalButton] as ViewStyle}
-              text="Hủy"
-              onPress={() => setIsUploading(false)}
-            />
-          </View>
-        </BlackBackgroundModal>
-      )}
-      {/* Title */}
-      <View style={styles.titleContainer}>
-        <Text style={TextStl.h1}>Image captioning</Text>
-      </View>
-      <View style={styles.contentContainer}>
-        <View>
-          {uri !== '' && (
-            <Image
-              source={{uri: uri}}
-              style={[styles.previewImage, {height: pictureHeight}]}
-              resizeMode="contain"
-            />
-          )}
+      <FloatingContainer>
+        <FloatingButton iconName="add" onPress={() => addAnnotation()} />
+        <FloatingButton iconName="send" onPress={() => sendUpdate()} />
+        <FloatingButton iconName="trash" onPress={() => sendDelete()} />
+      </FloatingContainer>
+      <ScrollView style={styles.container}>
+        {/* Title */}
+        <View style={styles.titleContainer}>
+          <Text style={TextStl.h1}>Hình ảnh</Text>
+        </View>
+        <View style={styles.contentContainer}>
           <View>
-            {params.type === 'url' && (
-              <Button
-                text={'Thêm vào dữ liệu'}
-                onPress={() => setIsUploading(true)}
+            {uri !== '' && (
+              <Image
+                source={{uri: uri}}
+                style={styles.previewImage}
+                resizeMode="contain"
               />
             )}
-            <Button text={'Gửi'} onPress={() => handleSend()} />
+
+            <View>
+              {annotations.map((inputString, key) => {
+                console.log(inputString);
+                return (
+                  <View style={styles.sameRow} key={key}>
+                    <Pressable onPress={() => removeAnnotation(key)}>
+                      <Icons name="trash" size={30} color="red" />
+                    </Pressable>
+                    <TextInput
+                      style={[
+                        InputStl.container,
+                        TextStl.base,
+                        styles.textBoxInRow,
+                      ]}
+                      placeholderTextColor={theme.darkGrey}
+                      placeholder="Chú thích"
+                      defaultValue={inputString}
+                      onChangeText={text => changeValue(key, text)}
+                    />
+                  </View>
+                );
+              })}
+            </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }

@@ -8,6 +8,7 @@ import Button from '../Components/Button';
 import {TextStl, InputStl, theme} from '../Constants/Style';
 import UserAPI from '../Services/userAPI';
 import {getUser} from '../Utils/user';
+import {displayError, handleError} from '../Utils/error';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -36,23 +37,17 @@ export function Login({navigation}: Props) {
   };
 
   const handleLogin = async () => {
-    let res = null;
+    var res = null;
     try {
       res = await UserAPI.login(formData);
     } catch (err) {
-      console.log(err);
-      if (typeof err === 'string') {
-        Alert.alert('Đăng nhập thất bại', err);
-      } else {
-        Alert.alert('Đăng nhập thất bại');
-      }
-      console.log(err);
+      handleError(err);
       return;
     }
 
     try {
-      await AsyncStorage.setItem('token', res.data.token);
-      await AsyncStorage.setItem('user', JSON.stringify(res.data.user));
+      await AsyncStorage.setItem('token', res.token);
+      await AsyncStorage.setItem('user', JSON.stringify(res.user));
 
       const user = await getUser();
 
@@ -63,7 +58,7 @@ export function Login({navigation}: Props) {
         },
       ]);
     } catch (err) {
-      console.log(err);
+      displayError('Lỗi', 'Không thể ghi dữ liệu vào bộ nhớ.');
       Alert.alert('Đăng nhập thất bại');
     }
   };

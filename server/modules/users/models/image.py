@@ -12,11 +12,10 @@ class Image(db.Base):
     
     id = Column(String, primary_key=True)
     # Basic image information
-    title = Column(String, nullable=False)
+    title = Column(String, nullable=False)    
     url = Column(String, nullable=True)
+    image_file = Column(String, nullable=True)    
     annotation = Column(String, nullable=False)
-    # If saving image in database with bytea
-    # image = Column(String, nullable=True)
     
     # Other image information
     user_id = Column(String, ForeignKey('users.id'))
@@ -25,17 +24,17 @@ class Image(db.Base):
     def __init__(self, data):
         self.id = str(uuid.uuid4())
         self.title = data['title']
+        
+        # Check if there's none of them
+        if not data['url'] and not data['image_file']:
+            raise ValueError("Either 'url' or 'image_file' must be provided")
         self.url = data['url']
+        self.image_file = data['image_file']
+        
         self.annotation = data['annotation']
         
     def __repr__(self):
         return f'<Image {self.title}>'
-    
-    @validates('url')
-    def validate_url(self, key, url):
-        if not url:
-            raise AssertionError('Url must be provided')
-        return url
     
     def link_user(self, user):
         self.user = user
@@ -46,5 +45,6 @@ class Image(db.Base):
             'id': self.id,
             'title': self.title,
             'url': self.url,
+            'image_file': self.image_file,
             'annotation': self.annotation,
         }

@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export function Url({navigation}: Props) {
-  console.log(navigation);
+export function Url({navigation, route}: Props) {
+  const params = route.params;
   const urlRef = React.createRef<TextInput>();
   let url = '';
   let imageSize = {width: 0, height: 0};
@@ -45,11 +45,11 @@ export function Url({navigation}: Props) {
           imageSize = {width, height};
         },
         error => {
-          Alert.alert('Error', 'Link ảnh không hợp lệ!');
+          Alert.alert('Lỗi', 'Link ảnh không hợp lệ!');
           console.log(error);
         },
       );
-      navigation.navigate('Image', {
+      navigation.navigate(params.to, {
         type: 'url',
         value: url,
         size: imageSize,
@@ -60,7 +60,7 @@ export function Url({navigation}: Props) {
     <View style={styles.container}>
       {/* Title app */}
       <View style={styles.titleContainer}>
-        <Text style={TextStl.h1}>Image link</Text>
+        <Text style={TextStl.h1}>Lấy ảnh từ đường dẫn</Text>
       </View>
       <View style={styles.contentContainer}>
         <View>

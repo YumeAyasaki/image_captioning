@@ -1,11 +1,17 @@
-import {post, postForm} from './generic';
+import {post} from './generic';
+
+type CaptionResponse = {
+  caption: string;
+  translated_caption: string;
+  time_to_generate: number;
+};
 
 const CaptioningAPI = {
-  url: function (data: string, token: string) {
-    return post('/api/caption/url/', data, token);
+  url: function (data: any) {
+    return post<CaptionResponse>('/api/caption/url/', data);
   },
-  image: function (data: any, token: string) {
-    return postForm('/api/caption/image/', data, token);
+  image: function (data: any) {
+    return post<CaptionResponse>('/api/caption/image/', data);
   },
 };
 

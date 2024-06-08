@@ -5,11 +5,11 @@ import {
   HomeScreen,
   LoginScreen,
   RegisterScreen,
-  CameraScreen,
-  SelectScreen,
-  ImageScreen,
+  CaptioningScreen,
   UrlScreen,
   DatabaseScreen,
+  StoreScreen,
+  ImageScreen,
 } from '../Screens';
 import {RootStackParamList} from '../Constants/ScreenTypes';
 
@@ -27,15 +27,19 @@ export default function Screen() {
         component={RegisterScreen}
         options={options}
       />
-      <Stack.Screen name="Camera" component={CameraScreen} options={options} />
-      <Stack.Screen name="Select" component={SelectScreen} options={options} />
-      <Stack.Screen name="Image" component={ImageScreen} options={options} />
+      <Stack.Screen
+        name="Captioning"
+        component={CaptioningScreen}
+        options={options}
+      />
+      <Stack.Screen name="Store" component={StoreScreen} options={options} />
       <Stack.Screen name="Url" component={UrlScreen} options={options} />
       <Stack.Screen
         name="Database"
         component={DatabaseScreen}
         options={options}
       />
+      <Stack.Screen name="Image" component={ImageScreen} options={options} />
     </Stack.Navigator>
   );
 }

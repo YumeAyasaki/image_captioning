@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Modal, View, StyleSheet, TextStyle} from 'react-native';
+import {Modal, View, StyleSheet, TextStyle, Pressable} from 'react-native';
 
 import {TextStl} from '../Constants/Style';
 
@@ -29,14 +29,15 @@ const styles = StyleSheet.create({
 
 type Props = {
   children: React.ReactNode;
+  onClose: () => void;
 };
 
-const BlackBackgroundModal = ({children}: Props) => {
+const BlackBackgroundModal = ({children, onClose}: Props) => {
   return (
     <Modal transparent={true}>
-      <View style={styles.container}>
+      <Pressable style={styles.container} onPress={onClose}>
         <View style={styles.content}>{children}</View>
-      </View>
+      </Pressable>
     </Modal>
   );
 };
