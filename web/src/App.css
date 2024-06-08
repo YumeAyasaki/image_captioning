@@ -10,6 +10,20 @@ body {
   justify-content: center;
   align-items: center;
 }
+.paddingBothSide {
+  padding: 0 10vw 0 10vw;
+}
+.paddingTop {
+  padding-top: 5vh;
+}
+.paddingBot {
+  padding-bottom: 5vh;
+}
+.imgBig
+{
+ max-width: 25vw;
+ height: auto;
+}
 
 .title {
   text-align: center;

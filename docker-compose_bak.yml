@@ -1,0 +1,31 @@
+version: '3.8'
+
+db:
+  image: postgres:latest
+  environment:
+    POSTGRES_PASSWORD: 19112002
+    #POSTGRES_USER: route_admin
+  expose:
+    - "5432" # Publishes 5433 to other containers but NOT to host machine
+  ports:
+    - "5432:5432"
+  #volumes:
+  #  - ./backups:/home/backups
+services:
+  frontend:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+
+  backend:
+    build:
+      context: ./server_mvc
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+    depends_on:
+      - frontend

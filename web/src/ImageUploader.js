@@ -13,7 +13,7 @@ function blobToBase64(blob) {
 function ImageUploader() {
     const {user, setUser} = useContext(UserContext);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [additionalInfo, setAdditionalInfo] = useState('');
+  const [additionalInfo, setAdditionalInfo] = useState(['']);
   const [serverResponse, setServerResponse] = useState('');
   console.log (user);
 
@@ -22,16 +22,20 @@ function ImageUploader() {
     setSelectedImage(file);
   };
 
-  const handleInfoChange = (event) => {
-    setAdditionalInfo(event.target.value);
+  const handleInfoChange = (event, index) => {
+    const tempInfo = [...additionalInfo];
+    tempInfo[index] = event.target.value;
+    setAdditionalInfo(tempInfo);
   };
+  const addCaptionBox = () => {
+    setAdditionalInfo([...additionalInfo, '']);
+  }
 
   const handleUpload = async () => {
     if (!selectedImage) {
       alert('Please select an image first.');
       return;
     }
-
     try {
       //const formData = new FormData();
       //formData.append('image', selectedImage);
@@ -41,8 +45,10 @@ function ImageUploader() {
       //reader.onloadend = function() {
         var base64data = await (blobToBase64(selectedImage))
       //url: URL.createObjectURL (selectedImage)
+      console.log (base64data);
       const dataToSend = {
         image: selectedImage,
+        image_file: base64data,
         url: base64data,
         title: 'testImage',
         annotation: additionalInfo
@@ -69,6 +75,7 @@ function ImageUploader() {
         alert('Error uploading image. Please try again later.');
         const data = await response.json();
         setServerResponse(data.message);
+        console.log ("Error: ", data);
         console.log (data.message);
       }
     } catch (error) {
@@ -86,12 +93,15 @@ function ImageUploader() {
           style={{ width: 'auto', maxHeight: '50vh' }}
         />
       )}
+      {additionalInfo.map ((info, index) => (
       <input
         type="text"
         placeholder="Image Caption"
-        value={additionalInfo}
-        onChange={handleInfoChange}
+        value={info}
+        onChange= {(event) => handleInfoChange (event, index)} //{handleInfoChange}
       />
+      ))};
+      <button onClick={addCaptionBox}>Add Caption</button>
       <button onClick={handleUpload}>Upload Image</button>
       <p>Server Response: {serverResponse}</p>
     </div>

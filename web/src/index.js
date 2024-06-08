@@ -13,7 +13,7 @@ import Register from "./Register";
 import PrivateRoute, {Isauth} from './PrivateRoute'
 import Captioning from "./Captioning";
 import ImageUploader from "./ImageUploader";
-import ImageViewer from "./ImageViewer";
+import {ImageViewer, SingleImageViewer} from "./ImageViewer";
 
 import "./App.css";
 
@@ -35,6 +35,7 @@ export default function App() {
                     <Captioning/>
                     </PrivateRoute>
                 } />
+                <Route path="/api/image/*" element={<PrivateRoute><SingleImageViewer/></PrivateRoute>} />
                 <Route path='/ImageViewer' element={
                     <PrivateRoute>
                     <ImageViewer/>
