@@ -5,22 +5,32 @@ FROM node:22-alpine
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+COPY package_docker.json ./
+RUN cp package_docker.json package.json
 
 # Install dependencies
-RUN npm install
+#RUN npm install
 
 # Copy the rest of the application code to the working directory
 COPY . .
 
+#Rename package_docker.json to package.json for future debugging purpose
+RUN mv package_docker.json package.json
+
+RUN npm config set proxy http://backend:5000  # set manully
 # Build the React application
 RUN npm run build
 
-# Serve the built application using a simple HTTP server
-RUN npm install -g serve
-
-# Set the command to run the server
-CMD ["serve", "-s", "build"]
-
 # Expose the port the app runs on
 EXPOSE 3000
+RUN npm config set proxy http://backend:5000  # set manully
+
+#RUN npm run start
+CMD ["npm", "run", "start"]
+
+# Serve the built application using a simple HTTP server
+#RUN npm install -g serve
+
+# Set the command to run the server
+#CMD ["serve", "-s", "build"]
+

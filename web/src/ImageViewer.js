@@ -73,7 +73,7 @@ export function ImageViewer() {
         headers.append('Authorization',"Bearer " + user); // Add the Authorization token to the headers
         headers.append('Content-Type','application/json');
 
-        const response = await fetch("//" + window.location.host.split('/')[0] + '/api/image/delete/' + window.location.href.split('#').shift().split('?').shift().replace(/\/$/, '').split('/').pop(), {
+        const response = await fetch("//" + window.location.host.split('/')[0] + '/api/image/delete/' + window.location.href.split('#').shift().split('?').shift().replace(/\/$/, '').split('/').pop() + "/", {
           method: 'DELETE', 
           headers,
         });
