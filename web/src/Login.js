@@ -40,9 +40,8 @@ export default function Login({ setToken }) {
     try { 
       loginUser(data).then ((token) => {console.log (token ['token']); return token ['token'].json();}) .then 
       ((message) => {
-          console.log(message.token);
-          setUser(message.token);
-          console.log (user);
+        const NIGGER = message.token;
+          setUser(NIGGER);
           navigate(from, { replace: true });
         });
     } catch (error) {
@@ -57,7 +56,7 @@ export default function Login({ setToken }) {
       <input type="text" placeholder="Username" name = 'username' {...register('username', { required: true })}  />
       {errors.username && <p className="error"> Username is required</p>}
 
-      <input type="password" placeholder="Password" 
+      <input type="password" placeholder="Password" autoComplete = "password" 
       name="password" {...register('password', { required: true, minLength: 6 })}
         />
       {errors.password && (
