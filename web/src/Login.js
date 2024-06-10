@@ -11,12 +11,7 @@ import { useForm } from "react-hook-form";
 async function loginUser(credentials) {
   // Make a POST request to your server with credentials
   // Server validates credentials and returns a JWT
-  // Example: const token = await fetch("/api/login", { method: "POST", body: credentials });
   
-  //credentials = {'username': 'sexsex', 'password':'sexsex'};
-  //console.log(JSON.stringify(credentials));
-  //console.log(credentials);
-  //console.log(JSON.parse(JSON.stringify(credentials)));
   const token = await fetch("/api/user/login/", { 
             method: "POST",   
             headers: {
@@ -24,14 +19,11 @@ async function loginUser(credentials) {
             }, 
             body: JSON.stringify(credentials) }
             );
-  //console.log("Token:", token);
-  //const nigger = await token.json();
-  //console.log("nigger:", nigger);
-  return {token}; // Replace with actual response
+  return {token};
 }
 
 export default function Login({ setToken }) {
-  console.log (UserContext);
+  //console.log (UserContext);
   const {user, setUser} = useContext(UserContext);
 
   const { register, handleSubmit, formState: { errors }} = useForm(); 

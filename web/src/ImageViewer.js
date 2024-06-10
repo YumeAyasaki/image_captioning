@@ -16,12 +16,12 @@ function ImageDisplay(imagesObj) {
           imagesObj.imagesObj && 
           Object.keys(imagesObj.imagesObj.images).map((key) => (
           // + imagesObj.imagesObj.images[key].id
-          <div>
-          {nigger = "//" + window.location.host.split('/')[0] + "/api/image/" + imagesObj.imagesObj.images[key].id + "/"}
-          <a href = {nigger} style = {{width: "auto", "min-width": "0"}} key={key}>
-            {console.log (imagesObj.imagesObj.images[key].id)}
+          <div style = {{ "padding": "1vh 1vw 1vh 1vw"}}>
+          <div style = {{"display": "none"}}>{nigger = "//" + window.location.host.split('/')[0] + "/api/image/" + imagesObj.imagesObj.images[key].id + "/"}</div>
+          <a href = {nigger} style = {{width: "auto", "minWidth": "0"}} key={key}>
+            {console.log (imagesObj.imagesObj.images[key].annotation)}
             <img class = "imgBig" key={key} src={imagesObj.imagesObj.images[key].url} alt={`Image ${key}`} />
-            <p>{imagesObj.imagesObj.images[key].annotation}</p>
+            <p>{imagesObj.imagesObj.images[key].annotation + ","}</p>
           </a>
           </div>
         ))
