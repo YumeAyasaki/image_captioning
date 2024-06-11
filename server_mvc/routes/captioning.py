@@ -24,18 +24,21 @@ def generate_caption_url():
 @caption_blueprint.route('/upload', methods=['POST', 'GET'])
 def upload_file():
     if (request.method == 'POST') or (request.method == 'GET'):
-        if request.files["file"].filename == '':
-            print ('No selected file')
-            return 'No selected file'
+        #if request.files["file"].filename == '':
+        #    print ('No selected file')
+        #    return 'No selected file'
         #print (request.form["InputBox"])
-        f = request.files["file"]
+        #f phai la base64
+        f = request.json["file"]
+        #print (request.form.to_dict()["file"])
         #fileName = TEMP_PATH + str(os.getpid())  +'.'+ (request.files["file"].filename.split('.')[-1])
         #, encoding='utf-8')
         #f.save(fileName)
         # model = g.model
-        stringPredict = model.generate_caption (f)
-        #stringPredict = model.generate_caption (fileName)
+        print (f)
+        stringPredict = model.generate_caption (f.split(',')[1])
         stringPredict = translate_sentence(stringPredict)
+        #stringPredict = "testString"
     response = make_response(stringPredict, 200)
     response.mimetype = "text/plain"
     return response 

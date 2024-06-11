@@ -7,9 +7,12 @@ import {UserContext} from "./index.js";
 
 function Isauth () {
     const {user, setUser} = useContext(UserContext);
-    console.log ("User: ");
-    console.log (user);
-    if (user) return true; else return false;
+    if (user) 
+    {
+      console.log ("Private route: user logged in");
+      console.log (user); return true;
+    }
+    else return false;
   //return true;
   //const auth = useSelector(state => state.auth); //If modified, will call useEffect function below;
   //const [isAuthenticated, setIsAuthenticated] = useState(null);

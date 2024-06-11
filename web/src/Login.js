@@ -11,12 +11,7 @@ import { useForm } from "react-hook-form";
 async function loginUser(credentials) {
   // Make a POST request to your server with credentials
   // Server validates credentials and returns a JWT
-  // Example: const token = await fetch("/api/login", { method: "POST", body: credentials });
   
-  //credentials = {'username': 'sexsex', 'password':'sexsex'};
-  //console.log(JSON.stringify(credentials));
-  //console.log(credentials);
-  //console.log(JSON.parse(JSON.stringify(credentials)));
   const token = await fetch("/api/user/login/", { 
             method: "POST",   
             headers: {
@@ -24,14 +19,11 @@ async function loginUser(credentials) {
             }, 
             body: JSON.stringify(credentials) }
             );
-  //console.log("Token:", token);
-  //const nigger = await token.json();
-  //console.log("nigger:", nigger);
-  return {token}; // Replace with actual response
+  return {token};
 }
 
 export default function Login({ setToken }) {
-  console.log (UserContext);
+  //console.log (UserContext);
   const {user, setUser} = useContext(UserContext);
 
   const { register, handleSubmit, formState: { errors }} = useForm(); 
@@ -46,15 +38,18 @@ export default function Login({ setToken }) {
 
   const onSubmit = (data) => {
     try { 
-      loginUser(data).then ((token) => {console.log (token ['token']); return token ['token'].json();}) .then 
-      ((message) => {
-          console.log(message.token);
-          setUser(message.token);
-          console.log (user);
-          navigate(from, { replace: true });
+        loginUser(data).then ((reponse) => {
+          if (!reponse.ok) {
+            setLoginError("Connection problem, server might be down"); 
+          }; 
+        console.log (reponse ['token']); return reponse ['token'].json();}).then 
+        ((message) => {
+          const NIGGER = message.token;
+            setUser(NIGGER);
+            navigate(from, { replace: true });
         });
     } catch (error) {
-      setLoginError('Invalid credentials. Please try again.');
+      setLoginError("Invalid credentials. Please try again.");
     }
   };
 
@@ -65,7 +60,7 @@ export default function Login({ setToken }) {
       <input type="text" placeholder="Username" name = 'username' {...register('username', { required: true })}  />
       {errors.username && <p className="error"> Username is required</p>}
 
-      <input type="password" placeholder="Password" 
+      <input type="password" placeholder="Password" autoComplete = "password" 
       name="password" {...register('password', { required: true, minLength: 6 })}
         />
       {errors.password && (
@@ -74,6 +69,7 @@ export default function Login({ setToken }) {
       <button type="submit" style={{ backgroundColor: "#a1ffa1" }}>
         Log In
       </button>
+      {loginError}
     </form>
   </>
   );

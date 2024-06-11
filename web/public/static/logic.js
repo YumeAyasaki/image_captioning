@@ -85,10 +85,25 @@ console.log (textValue);
  document.getElementById('CaptioningResult').textContent = textValue;
 }
 
-document.querySelector("#ImageForm").addEventListener("submit", function(e){
+function blobToBase64(blob) {
+  return new Promise((resolve, _) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    console.log ("Type of blob: ");
+    console.log (typeof blob);
+    console.log (blob);
+    reader.readAsDataURL(blob);
+  });
+}
+document.querySelector("#ImageForm").addEventListener("submit", async function(e){
         e.preventDefault();    //stop form from submitting
 		const myForm = document.forms['ImageForm'];
-		fetch(document.forms['ImageForm'].action, {method:'POST', body: new FormData(myForm)})
+    var base64data = await blobToBase64(myForm['InputBox'].files[0]);
+    dataToSend = {"file":base64data}
+    console.log (dataToSend);
+    //console.log (base64data);
+    //console.log (JSON.stringify(dataToSend));
+		fetch("/api/caption/upload", {method:'POST', headers: new Headers({'content-type': 'application/json'}), body: JSON.stringify(dataToSend)})
 				.then((response) => {
 			if (!response.ok) {
 			  throw new Error("HTTP error: ${response.status}");

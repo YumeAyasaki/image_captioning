@@ -76,7 +76,7 @@ export default function Register() {
         <p className="error">Password must be at least 6 characters</p>
       )}
       
-      <input type="rePassword" placeholder="rePassword" 
+      <input type="password" placeholder="rePassword" 
       name="rePassword" {...register('rePassword', { required: true, minLength: 6 })}
         />
       {errors.rePassword && (

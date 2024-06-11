@@ -1,7 +1,8 @@
 import React, { Component, useState } from 'react';
 import {UserContext} from "./index.js";
 import { useContext, useEffect } from "react";
-
+import { useNavigate  } from "react-router-dom";
+import {Link} from 'react-router-dom';
 
 function ImageDisplay(imagesObj) {
     if (imagesObj.imagesObj)
@@ -16,12 +17,12 @@ function ImageDisplay(imagesObj) {
           imagesObj.imagesObj && 
           Object.keys(imagesObj.imagesObj.images).map((key) => (
           // + imagesObj.imagesObj.images[key].id
-          <div>
-          {nigger = "//" + window.location.host.split('/')[0] + "/api/image/" + imagesObj.imagesObj.images[key].id + "/"}
-          <a href = {nigger} style = {{width: "auto", "min-width": "0"}} key={key}>
-            {console.log (imagesObj.imagesObj.images[key].id)}
+          <div style = {{ "padding": "1vh 1vw 1vh 1vw"}}>
+          <div style = {{"display": "none"}}>{nigger = "//" + window.location.host.split('/')[0] + "/api/image/" + imagesObj.imagesObj.images[key].id + "/"}</div>
+          <a href = {nigger} style = {{width: "auto", "minWidth": "0"}} key={key}>
+            {console.log (imagesObj.imagesObj.images[key].annotation)}
             <img class = "imgBig" key={key} src={imagesObj.imagesObj.images[key].url} alt={`Image ${key}`} />
-            <p>{imagesObj.imagesObj.images[key].annotation}</p>
+            <p>{imagesObj.imagesObj.images[key].annotation + ","}</p>
           </a>
           </div>
         ))
@@ -47,7 +48,7 @@ export function ImageViewer() {
     }, []); 
 
     return (
-      <div class = "paddingBothSide">
+      <div class = "paddingBothSide paddingTop">
         {error ? (
           <p>{error}</p>
         ) : (
@@ -55,6 +56,7 @@ export function ImageViewer() {
             <ImageDisplay imagesObj = {images}/>
           </ul>
         )}
+        {(!images || !images.imagesObj)? <><p> Hình như không có ảnh nào ở đây hết </p> <Link to='/ImageUploader'> Bấm để qua trang upload ảnh </Link> </> : null}
       </div>
     );
   }
@@ -63,9 +65,11 @@ export function ImageViewer() {
   {
  
     const [image, setImage] = React.useState('');
+    const [SvMsg, setSvMsg] = React.useState('');
     const [error, setError] = React.useState(null);
     const {user, setUser} = useContext(UserContext);
     console.log ("Current User API key: ", user);
+    const navigate = useNavigate();
     const DeleteImageAPI = async () => {
       console.log ("DeleteImageApi");
       try {
@@ -83,7 +87,11 @@ export function ImageViewer() {
         }
     
         const data = await response.json();
+        setSvMsg (data.msg);
         console.log('API response:', data); // Handle the API response as needed
+        setTimeout(function() {
+          navigate("/ImageViewer");
+        }, 3000);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -103,5 +111,12 @@ export function ImageViewer() {
         ).then ((response) => {response.json().then (result => {console.log ("useEffect: ",image); console.log (result);setImage(result);})
         }); 
     }, []); 
-    return (<div><button onClick={() => DeleteImageAPI({})}>Delete Image</button> <img src = {image && image.image.image_file}></img> </div>);
-  }   
+    return (
+      <div className = "paddingBothSide paddingTop">
+        <button onClick={() => DeleteImageAPI({})}>Delete Image</button> 
+        {SvMsg}
+        <img src = {image && image.image.image_file}></img> 
+        {!image ? <> <p> Có thể ảnh không còn tồn tại nữa </p> <Link to='/ImageViewer'> Bấm để về trang thư viện ảnh</Link> </> : null}
+      </div>
+      );
+  }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {UserContext} from "./index.js";
 import { useContext } from "react";
-
+import {Link} from 'react-router-dom';
 function blobToBase64(blob) {
   return new Promise((resolve, _) => {
     const reader = new FileReader();
@@ -15,7 +15,7 @@ function ImageUploader() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [additionalInfo, setAdditionalInfo] = useState(['']);
   const [serverResponse, setServerResponse] = useState('');
-  console.log (user);
+  //console.log (user);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -30,21 +30,25 @@ function ImageUploader() {
   const addCaptionBox = () => {
     setAdditionalInfo([...additionalInfo, '']);
   }
+  const removeCaptionBox = () => {
+    const tempInfo = additionalInfo;
+    tempInfo.pop();
+    setAdditionalInfo([...tempInfo]);
+  }
 
   const handleUpload = async () => {
     if (!selectedImage) {
-      alert('Please select an image first.');
+      setServerResponse('Chọn ảnh trước.');
+      return;
+    }
+    if (additionalInfo.length == 0) {
+      setServerResponse('Thêm ít nhất một câu caption cho ảnh.');
       return;
     }
     try {
-      //const formData = new FormData();
-      //formData.append('image', selectedImage);
-      //formData.append('additionalInfo', additionalInfo);
+      setServerResponse ('');
       var reader = new FileReader();
-      //reader.readAsDataURL(selectedImage); //URL.createObjectURL (selectedImage)
-      //reader.onloadend = function() {
         var base64data = await (blobToBase64(selectedImage))
-      //url: URL.createObjectURL (selectedImage)
       console.log (base64data);
       const dataToSend = {
         image: selectedImage,
@@ -52,8 +56,6 @@ function ImageUploader() {
         url: base64data,
         title: 'testImage',
         annotation: additionalInfo
-        //additionalInfo: additionalInfo,
-        //authorizationToken: user,
       };
 
       const headers = new Headers();
@@ -67,14 +69,14 @@ function ImageUploader() {
       });
 
       if (response.ok) {
-        alert('Image uploaded successfully!');
+        //alert('Image uploaded successfully!');
         const data = await response.json();
-        setServerResponse(data.message);
+        setServerResponse(data.msg);
         // Handle any further actions after successful upload
       } else {
-        alert('Error uploading image. Please try again later.');
+        //alert('Error uploading image. Please try again later.');
         const data = await response.json();
-        setServerResponse(data.message);
+        setServerResponse(data.msg);
         console.log ("Error: ", data);
         console.log (data.message);
       }
@@ -84,8 +86,23 @@ function ImageUploader() {
   };
 
   return (
-    <div>
-      <input type="file" accept="image/*" onChange={handleImageChange} />
+    <div className = "paddingBothSide paddingTop">
+      <div style = {{"width": "100%"}}>
+        <input type="file" accept="image/*" onChange={handleImageChange} />
+        <button onClick={addCaptionBox}>Add Caption</button>
+        <button onClick={removeCaptionBox}>Remove Caption</button>        
+        <button onClick={handleUpload}>Upload Image</button>
+      </div>
+      {additionalInfo.map ((info, index) => (
+      <input
+        type="text"
+        placeholder="Miêu tả ảnh"
+        value={info}
+        onChange= {(event) => handleInfoChange (event, index)} //{handleInfoChange}
+      />
+      ))}
+      <Link to='/ImageViewer'> Bấm để qua trang thư viện ảnh </Link>
+      <p style = {{"padding-left": "0.3vw"}}> Phản hồi từ server: {serverResponse}</p>
       {selectedImage && (
         <img
           src={URL.createObjectURL(selectedImage)}
@@ -93,17 +110,6 @@ function ImageUploader() {
           style={{ width: 'auto', maxHeight: '50vh' }}
         />
       )}
-      {additionalInfo.map ((info, index) => (
-      <input
-        type="text"
-        placeholder="Image Caption"
-        value={info}
-        onChange= {(event) => handleInfoChange (event, index)} //{handleInfoChange}
-      />
-      ))};
-      <button onClick={addCaptionBox}>Add Caption</button>
-      <button onClick={handleUpload}>Upload Image</button>
-      <p>Server Response: {serverResponse}</p>
     </div>
   );
 }
