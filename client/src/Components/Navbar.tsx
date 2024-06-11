@@ -6,6 +6,7 @@ import Icons from 'react-native-vector-icons/Ionicons';
 import {useUser} from '../Hooks/user';
 import {theme} from '../Constants/Style';
 import UploadMethodModal from './UploadMethod';
+import ChangeUrl from './ChangeUrl';
 
 const styles = StyleSheet.create({
   navBarContainer: {
@@ -44,6 +45,7 @@ const NavBar = ({navigation}: Props) => {
   const {user} = useUser();
   const [onStore, setOnStore] = useState<Boolean>(false);
   const [onCaptioning, setOnCaptioning] = useState<Boolean>(false);
+  const [onChangeUrl, setOnChangeUrl] = useState<Boolean>(false);
   return (
     <View style={styles.navBarContainer}>
       <View style={styles.navBarComponent}>
@@ -52,6 +54,12 @@ const NavBar = ({navigation}: Props) => {
           onPress={() => navigation.navigate('Home')}
           style={styles.randomPadding}>
           <Icons name="home" size={30} color="white" />
+        </Pressable>
+        {/* Setting */}
+        <Pressable
+          onPress={() => setOnChangeUrl(true)}
+          style={styles.randomPadding}>
+          <Icons name="settings" size={30} color="white" />
         </Pressable>
         {/* Captioning */}
         <Pressable
@@ -109,6 +117,7 @@ const NavBar = ({navigation}: Props) => {
           onClose={() => setOnCaptioning(false)}
         />
       )}
+      {onChangeUrl && <ChangeUrl onClose={() => setOnChangeUrl(false)} />}
     </View>
   );
 };

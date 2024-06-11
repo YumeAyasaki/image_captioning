@@ -20,6 +20,11 @@ configuredAxios.interceptors.request.use(
   (error: AxiosError) => Promise.reject(error),
 );
 
+export function changeBaseUrl(newUrl: string) {
+  configuredAxios.defaults.baseURL = newUrl;
+  console.log('changed');
+}
+
 export async function get<T>(url: string): Promise<T> {
   console.log(url);
 

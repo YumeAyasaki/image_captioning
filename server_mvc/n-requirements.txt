@@ -1,0 +1,11 @@
+flask
+flask_cors
+python-dotenv
+SQLAlchemy
+psycopg2
+---
+pydantic
+pydantic[email]
+bcrypt
+PyJWT
+deep_translator
