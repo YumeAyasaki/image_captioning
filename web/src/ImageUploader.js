@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {UserContext} from "./index.js";
 import { useContext } from "react";
-
+import {Link} from 'react-router-dom';
 function blobToBase64(blob) {
   return new Promise((resolve, _) => {
     const reader = new FileReader();
@@ -15,7 +15,7 @@ function ImageUploader() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [additionalInfo, setAdditionalInfo] = useState(['']);
   const [serverResponse, setServerResponse] = useState('');
-  console.log (user);
+  //console.log (user);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -86,7 +86,7 @@ function ImageUploader() {
   };
 
   return (
-    <div class = "paddingBothSide paddingTop">
+    <div className = "paddingBothSide paddingTop">
       <div style = {{"width": "100%"}}>
         <input type="file" accept="image/*" onChange={handleImageChange} />
         <button onClick={addCaptionBox}>Add Caption</button>
@@ -101,6 +101,7 @@ function ImageUploader() {
         onChange= {(event) => handleInfoChange (event, index)} //{handleInfoChange}
       />
       ))}
+      <Link to='/ImageViewer'> Bấm để qua trang thư viện ảnh </Link>
       <p style = {{"padding-left": "0.3vw"}}> Phản hồi từ server: {serverResponse}</p>
       {selectedImage && (
         <img

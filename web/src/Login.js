@@ -38,14 +38,18 @@ export default function Login({ setToken }) {
 
   const onSubmit = (data) => {
     try { 
-      loginUser(data).then ((token) => {console.log (token ['token']); return token ['token'].json();}) .then 
-      ((message) => {
-        const NIGGER = message.token;
-          setUser(NIGGER);
-          navigate(from, { replace: true });
+        loginUser(data).then ((reponse) => {
+          if (!reponse.ok) {
+            setLoginError("Connection problem, server might be down"); 
+          }; 
+        console.log (reponse ['token']); return reponse ['token'].json();}).then 
+        ((message) => {
+          const NIGGER = message.token;
+            setUser(NIGGER);
+            navigate(from, { replace: true });
         });
     } catch (error) {
-      setLoginError('Invalid credentials. Please try again.');
+      setLoginError("Invalid credentials. Please try again.");
     }
   };
 
@@ -65,6 +69,7 @@ export default function Login({ setToken }) {
       <button type="submit" style={{ backgroundColor: "#a1ffa1" }}>
         Log In
       </button>
+      {loginError}
     </form>
   </>
   );
