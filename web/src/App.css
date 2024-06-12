@@ -1,6 +1,6 @@
 /* src/App.css */
 #root {
-	height: 99vh;
+	height: 100vh;
   overflow-x: hidden;
   width: 100vw;
 }
@@ -9,6 +9,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.mediumText * {
+  font-size: 1.75vh;
 }
 .paddingBothSide {
   padding: 0 10vw 0 10vw;

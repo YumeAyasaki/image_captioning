@@ -113,7 +113,7 @@ document.querySelector("#ImageForm").addEventListener("submit", async function(e
 		  .then(blob => blob.text()).then (textValue => {changeResultText (textValue)});
 });
 
-document.querySelector("#ChinhSuaForm").addEventListener("submit", function(e){
+/*document.querySelector("#ChinhSuaForm").addEventListener("submit", function(e){
 		console.log ("ChinhSuaForm");
         e.preventDefault();    //stop form from submitting
 		const myForm2 = document.forms['ChinhSuaForm']
@@ -130,7 +130,7 @@ document.querySelector("#ChinhSuaForm").addEventListener("submit", function(e){
 function disableLastButton(){
       document.getElementById("LastButton").disabled = true;
       setTimeout(function(){document.getElementById("LastButton").disabled = false;},20000);
-  }
+  }*/
 /*document.querySelector("#LastButton").addEventListener("click", function(e){
 	disableLastButton();
   fetch('/convert', {method:"POST", body:currentBlobImage})

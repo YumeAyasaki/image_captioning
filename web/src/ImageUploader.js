@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {UserContext} from "./index.js";
 import { useContext } from "react";
 import {Link} from 'react-router-dom';
+import Navigation from './components/Navigation';
 function blobToBase64(blob) {
   return new Promise((resolve, _) => {
     const reader = new FileReader();
@@ -86,30 +87,40 @@ function ImageUploader() {
   };
 
   return (
-    <div className = "paddingBothSide paddingTop">
+    <div><Navigation />
+    <div className = "paddingBothSide paddingTop mediumText">
+      
       <div style = {{"width": "100%"}}>
         <input type="file" accept="image/*" onChange={handleImageChange} />
-        <button onClick={addCaptionBox}>Add Caption</button>
-        <button onClick={removeCaptionBox}>Remove Caption</button>        
-        <button onClick={handleUpload}>Upload Image</button>
       </div>
-      {additionalInfo.map ((info, index) => (
-      <input
-        type="text"
-        placeholder="Miêu tả ảnh"
-        value={info}
-        onChange= {(event) => handleInfoChange (event, index)} //{handleInfoChange}
-      />
-      ))}
-      <Link to='/ImageViewer'> Bấm để qua trang thư viện ảnh </Link>
-      <p style = {{"padding-left": "0.3vw"}}> Phản hồi từ server: {serverResponse}</p>
+      <div style = {{"width": "100%"}}>
+        {additionalInfo.map ((info, index) => (
+        <input
+          type="text"
+          placeholder="Miêu tả ảnh"
+          value={info}
+          onChange= {(event) => handleInfoChange (event, index)} //{handleInfoChange}
+        />
+        ))}
+      </div>
+      <div style = {{"width": "100%", "margin-left":"0.2vw", "margin-top":"0.5vh"}}>
+        <button onClick={addCaptionBox}> Thêm chú thích </button>
+        <button style = {{"margin-left":"0.2vw"}} onClick={removeCaptionBox}> Xóa chú thích </button>   
+      </div>     
+      <div style = {{"width": "100%", "margin-left":"0.2vw", "margin-top":"0.5vh"}}>
+        <button onClick={handleUpload}> Đăng ảnh và các chú thích </button>
+      </div>     
+      <div style = {{"width": "100%", "margin-left":"0.2vw", "margin-top":"0.5vh"}}>
+        {serverResponse? <p style = {{"padding-left": "0.3vw"}}> Phản hồi từ server: {serverResponse}</p> : null}
+      </div>     
       {selectedImage && (
         <img
           src={URL.createObjectURL(selectedImage)}
           alt="Selected Image Preview"
-          style={{ width: 'auto', maxHeight: '50vh' }}
+          style={{ width: 'auto', maxHeight: '50vh', marginTop: '2vh' }}
         />
       )}
+    </div>
     </div>
   );
 }

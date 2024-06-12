@@ -5,6 +5,7 @@ import {UserContext} from "./index.js";
 import {useNavigate, useLocation } from 'react-router-dom'
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
+import Navigation from './components/Navigation';
 //import "./App.css";
 
 
@@ -55,6 +56,7 @@ export default function Login({ setToken }) {
 
   return (
     <>
+      <Navigation />
     <p className="title">Login Form</p>
     <form className="App" onSubmit={handleSubmit(onSubmit)}>
       <input type="text" placeholder="Username" name = 'username' {...register('username', { required: true })}  />

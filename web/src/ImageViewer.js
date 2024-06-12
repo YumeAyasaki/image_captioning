@@ -3,6 +3,7 @@ import {UserContext} from "./index.js";
 import { useContext, useEffect } from "react";
 import { useNavigate  } from "react-router-dom";
 import {Link} from 'react-router-dom';
+import Navigation from './components/Navigation';
 
 function ImageDisplay(imagesObj) {
     if (imagesObj.imagesObj)
@@ -35,6 +36,7 @@ export function ImageViewer() {
     const [error, setError] = React.useState(null);
     const {user, setUser} = useContext(UserContext);  
     console.log ("ImageViewer, current User API key: ", user);
+    const [imgCheck, setImgCheck] = React.useState(false);
     
     useEffect(()=>{
         const headers = new Headers();
@@ -43,20 +45,26 @@ export function ImageViewer() {
         const response = fetch('/api/image/', {
             method: 'GET',
             headers,
-          }).then ((response) => {response.json().then (result => {setImages(result);})
-        });
+          }).then ((response) => {response.json().then (result => {setImages(result); 
+                                                          setTimeout(function() {
+                                                            setImgCheck (true);
+                                                          }, 0);})
+                                                        });
     }, []); 
 
     return (
-      <div class = "paddingBothSide paddingTop">
-        {error ? (
-          <p>{error}</p>
-        ) : (
-          <ul>
-            <ImageDisplay imagesObj = {images}/>
-          </ul>
-        )}
-        {(!images || !images.imagesObj)? <><p> Hình như không có ảnh nào ở đây hết </p> <Link to='/ImageUploader'> Bấm để qua trang upload ảnh </Link> </> : null}
+      <div>
+        <Navigation />
+        <div class = "paddingBothSide paddingTop mediumText">
+          {error ? (
+            <p>{error}</p>
+          ) : (
+            <ul>
+              <ImageDisplay imagesObj = {images}/>
+            </ul>
+          )}
+          {((imgCheck == true) & (!images))? <><p> Hình như không có ảnh nào ở đây hết, bạn nên đăng ảnh </p> <Link to='/ImageUploader'> Bấm để qua trang upload ảnh </Link> </> : null}
+        </div>
       </div>
     );
   }
@@ -112,11 +120,14 @@ export function ImageViewer() {
         }); 
     }, []); 
     return (
-      <div className = "paddingBothSide paddingTop">
-        <button onClick={() => DeleteImageAPI({})}>Delete Image</button> 
-        {SvMsg}
+      <div>
+        <Navigation />
+      <div className = "paddingBothSide paddingTop mediumText">
+        <div style = {{"width":"100%", "margin-bottom": "1vh"}}><button onClick={() => DeleteImageAPI({})}> Xóa Ảnh  </button> 
+        {SvMsg} </div>
         <img src = {image && image.image.image_file}></img> 
         {!image ? <> <p> Có thể ảnh không còn tồn tại nữa </p> <Link to='/ImageViewer'> Bấm để về trang thư viện ảnh</Link> </> : null}
+      </div>
       </div>
       );
   }

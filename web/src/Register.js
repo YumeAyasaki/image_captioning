@@ -1,8 +1,10 @@
 // register.js
 //import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom'
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
+import Navigation from './components/Navigation';
 //import "./App.css";
 
 async function registerUser(credentials) {
@@ -25,6 +27,7 @@ async function registerUser(credentials) {
 }
 
 export default function Register() {
+  const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors }} = useForm();
   const [response, setResponse] = useState();
   const [status, setStatus] = useState();
@@ -37,9 +40,13 @@ export default function Register() {
           setStatus(token.ok); 
           return token.json();
           }
-          ).then ((message) => {console.log(message); setResponse(message['message']);});
+          ).then ((message) => {
+                    console.log(message); 
+                    setResponse(message['message']); 
+                    setTimeout(function() {navigate("/");}, 3000);
+                });
     } catch (error) {
-      setLoginError('Invalid credentials. Please try again.');
+      setLoginError('Thông tin không phù hợp');
     }
   };
 
@@ -52,9 +59,10 @@ export default function Register() {
   // Render your login form here
   return (
     <>
-    <p className="title">Register Form</p>
+      <Navigation />
+    <p className="title"> Biểu mẫu đăng ký </p>
     <form className="App" onSubmit={handleSubmit(onSubmit)}>
-      <input type="text" placeholder="Username" name = 'username' {...register('username', { required: true })}  />
+      <input type="text" placeholder="Tài khoản" name = 'username' {...register('username', { required: true })}  />
       {errors.username && <p className="error"> Username is required</p>}
      
       <input id="email" placeholder="example@email.com"
@@ -62,29 +70,29 @@ export default function Register() {
           required: "required",
           pattern: {
                     value: /\S+@\S+\.\S+/,
-                    message: "Entered value does not match email format",
+                    message: "Email nhập vào không đúng định dạng email",
                     },})
         }
         type="email"
       />
       {errors.email && <span role="alert">{errors.email.message}</span>}
 
-      <input type="password" placeholder="Password" 
-      name="password" {...register('password', { required: true, minLength: 6 })}
+      <input type="password" placeholder="Mật khẩu" 
+      name="password" {...register('password', { required: true, minLength: 8 })}
         />
       {errors.password && (
-        <p className="error">Password must be at least 6 characters</p>
+        <p className="error"> Độ dài tối thiểu mật khẩu 8 ký tự </p>
       )}
       
-      <input type="password" placeholder="rePassword" 
-      name="rePassword" {...register('rePassword', { required: true, minLength: 6 })}
+      <input type="password" placeholder="Nhập lại mật khẩu" 
+      name="rePassword" {...register('rePassword', { required: true, minLength: 8 })}
         />
       {errors.rePassword && (
-        <p className="error">rePassword must be at least 6 characters</p>
+        <p className="error"> Độ dài tối thiểu của mật khẩu nhập lại 8 ký tự và phải trùng với mật khẩu </p>
       )}
       
-      <button type="submit" style={{ backgroundColor: "#a1ffa1" }}>
-          Register
+      <button type="submit" style={{ backgroundColor: "#a1ffa1", "min-height": "4vh" }}>
+          Đăng Ký
       </button>
       <p> {response} </p>
     </form>
