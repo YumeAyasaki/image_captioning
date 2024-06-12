@@ -1,79 +1,72 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+Đây là một dự án React Native dành cho điện thoại Android, là frontend của dự án Image Captioning.
 
-# Getting Started
+# Chuẩn bị
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Chuẩn bị môi trường:
 
-## Step 1: Start the Metro Server
+Hoàn thành bước chuẩn bị môi trường cho các dự án React Native, dựa vào trang [React Native - Cài đặt môi trường](https://reactnative.dev/docs/environment-setup). Điều này bao gồm:
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+- Node, môi trường chính.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+- Thư viện React Native.
 
-```bash
-# using npm
-npm start
+- JDK - Java Development Kit.
 
-# OR using Yarn
-yarn start
+- Android Studio.
+
+- (macOS) Watchman.
+
+Các bước cài đặt chi tiết vui lòng xem trang cài đặt.
+
+## Chuẩn bị mã nguồn:
+
+Mã nguồn có thể lấy được từ git thông qua lệnh.
+
+```
+git clone https://github.com/YumeAyasaki/image_captioning.git
+cd client
 ```
 
-## Step 2: Start your Application
+Cài đặt các thư viện cần thiết bằng
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+```
+npm install
+```
 
-### For Android
+# Chạy mã nguồn
 
-```bash
-# using npm
+## Chuẩn bị
+- Kiểm tra lại file môi trường ``.env``. Bởi vì thông thường, các thiết bị android chạy được xem là thiết bị riêng biệt so với thiết bị chạy máy nên việc sử dụng ngrok là được khuyên nhủ. Vì vậy, việc cập nhật đường dẫn server mới vào ``.env`` là cần thiết.
+Người dùng cũng có thể cập nhật trong ứng dụng (Xem thêm: Mục 4. Hướng dẫn sử dụng, phần a. Ứng dụng React Native), tuy nhiên điều này có khả năng sẽ gây ra lỗi.
+
+- Đảm bảo rằng máy tính/laptop đã nhận được thiết bị bằng công cụ adb. Việc kiểm tra có thể thực hiện dễ dàng bằng dòng lệnh
+```
+adb devices
+```
+
+## Chế độ gỡ lỗi
+Khởi động một server Metro bằng dòng lệnh.
+```
+npm run start
+```
+
+Đảm bảo rằng server đã được khởi động hoàn tất, thể hiện bằng các command của server.
+
+![Server khởi động thành công](./img/image_1.png)
+
+Tạo một terminal mới, khởi động việc build ứng dụng bằng
+```
 npm run android
-
-# OR using Yarn
-yarn android
 ```
 
-### For iOS
+hoặc build nhanh hơn, trong trường hợp người dùng có nhu cầu sử dụng hoặc khởi động lại ứng dụng nhiều lần.
 
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+```
+npm run android-fast
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+## Chế độ đóng gói
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+Việc đóng gói một ứng dụng có thể không cần thiết trong việc thiết kế ứng dụng, nhưng để một ứng dụng có thể thương mại được thì việc đóng gói là cần thiết.
 
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Để đóng gói, người dùng có thể đi đến trang [Phát hành lên Google Play Store](https://reactnative.dev/docs/signed-apk-android) hoặc [Cách để tạo sinh một phiên bản .apk của một ứng dụng React Native cho Android - instamobile](https://instamobile.io/android-development/generate-react-native-release-build-android/).
