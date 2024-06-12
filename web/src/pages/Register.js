@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
-import Navigation from './components/Navigation';
+import Navigation from '.././components/Navigation';
 //import "./App.css";
 
 async function registerUser(credentials) {
@@ -12,10 +12,6 @@ async function registerUser(credentials) {
   // Server validates credentials and returns a JWT
   // Example: const token = await fetch("/api/login", { method: "POST", body: credentials });
   
-  //credentials = {'username': 'sexsex', 'password':'sexsex'};
-  //console.log(JSON.stringify(credentials));
-  //console.log(credentials);
-  //console.log(JSON.parse(JSON.stringify(credentials)));
   const token = await fetch("/api/user/register/", { 
             method: "POST",   
             headers: {
@@ -50,11 +46,6 @@ export default function Register() {
     }
   };
 
-  //const handleSubmit = async (e) => {
-  //  e.preventDefault();
-  //  const token = await loginUser({ username, password });
-  //  setToken(token); // Save the token
-  //};
 
   // Render your login form here
   return (

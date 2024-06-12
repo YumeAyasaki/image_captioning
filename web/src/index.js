@@ -4,18 +4,14 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import {Provider} from "react-redux";
 //import store from "./store";
 import Layout from "./pages/Layout";
-import Home from "./pages/Home";
-import Blogs from "./pages/Blogs";
-import Contact from "./pages/Contact";
-import NoPage from "./pages/NoPage";
-import Login from "./Login";
-import Register from "./Register";
-import PrivateRoute, {Isauth} from './PrivateRoute'
-import Captioning from "./Captioning";
-import ImageUploader from "./ImageUploader";
-import {ImageViewer, SingleImageViewer} from "./ImageViewer";
-
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import PrivateRoute, {Isauth} from './components/PrivateRoute'
+import Captioning from "./pages/Captioning";
+import ImageUploader from "./pages/ImageUploader";
+import {ImageViewer, SingleImageViewer} from "./pages/ImageViewer";
 import "./App.css";
+
 
 const UserContext = createContext();
 export {UserContext};
@@ -35,7 +31,11 @@ export default function App() {
                     <Captioning/>
                     </PrivateRoute>
                 } />
-                <Route path="/api/image/*" element={<PrivateRoute><SingleImageViewer/></PrivateRoute>} />
+                <Route path="/api/image/*" element={
+                        <PrivateRoute>
+                        <SingleImageViewer/>
+                        </PrivateRoute>
+                    }/>
                 <Route path='/ImageViewer' element={
                     <PrivateRoute>
                     <ImageViewer/>

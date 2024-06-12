@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import {UserContext} from "./index.js";
+import {UserContext} from ".././index.js";
 import { useContext } from "react";
 import {Link} from 'react-router-dom';
-import Navigation from './components/Navigation';
+import Navigation from '.././components/Navigation';
 function blobToBase64(blob) {
   return new Promise((resolve, _) => {
     const reader = new FileReader();

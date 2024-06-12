@@ -1,16 +1,11 @@
 import React, { Component, useState } from 'react';
-import {UserContext} from "./index.js";
+import {UserContext} from ".././index.js";
 import { useContext, useEffect } from "react";
 import { useNavigate  } from "react-router-dom";
 import {Link} from 'react-router-dom';
-import Navigation from './components/Navigation';
+import Navigation from '.././components/Navigation';
 
 function ImageDisplay(imagesObj) {
-    if (imagesObj.imagesObj)
-        {
-            //console.log ("FUCK ME");
-            //console.log (imagesObj.imagesObj); 
-        }
     var nigger = "";
     return (
         <div style = {{display: "ruby", width: "100%"}}>
@@ -20,11 +15,11 @@ function ImageDisplay(imagesObj) {
           // + imagesObj.imagesObj.images[key].id
           <div style = {{ "padding": "1vh 1vw 1vh 1vw"}}>
           <div style = {{"display": "none"}}>{nigger = "//" + window.location.host.split('/')[0] + "/api/image/" + imagesObj.imagesObj.images[key].id + "/"}</div>
-          <a href = {nigger} style = {{width: "auto", "minWidth": "0"}} key={key}>
+          <Link to = {nigger}><a style = {{width: "auto", "minWidth": "0"}} key={key}>
             {console.log (imagesObj.imagesObj.images[key].annotation)}
             <img class = "imgBig" key={key} src={imagesObj.imagesObj.images[key].url} alt={`Image ${key}`} />
             <p>{imagesObj.imagesObj.images[key].annotation + ","}</p>
-          </a>
+          </a></Link>
           </div>
         ))
         }
@@ -104,9 +99,7 @@ export function ImageViewer() {
         console.error('Error fetching data:', error);
       }
     };
-    //const imgUrl = "//" + window.location.host.split('/')[0] + '/api/image/' + window.location.href.split('#').shift().split('?').shift().replace(/\/$/, '').split('/').pop();
     const imgUrl = ('/api/image/' + window.location.href.split('#').shift().split('?').shift().replace(/\/$/, '').split('/').pop() + "/");
-    //const img = fetch (imgUrl).then ((response) =>{return response.json().then  ((response) => {console.log (response); return response;})});
     console.log ("Gay",imgUrl);   
     useEffect(()=>{
         const headers = new Headers();
